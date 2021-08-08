@@ -20,7 +20,7 @@
 // 함수 바깥에서 free등의 처리를 일관성 있게 하기 위해 아무 인자가 없는 빈 스트링이 들어온 경우에도 동적 할당을 하는 쪽으로 생각
 
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 // line이 nul문자를 만나서 정상적으로 while문을 탈출하면 tokenize_return_check에서 만들던 스트링 마무리 지어서 노드에 달아줘야 한다.
 int		tokenize(char *line)
@@ -42,6 +42,8 @@ int		tokenize(char *line)
 			error_check = at_redirection_char(&line);
 		else if (*line == ' ')
 			error_check = at_white_spaces(&line);
+		else
+			error_check = make_string_and_link_node(NORMAL, *line);
 		if (error_check < 0)
 			break ;
 		line++;
@@ -100,7 +102,8 @@ int		at_double_quote(char **line)
 		}
 		else if (**line == '\0' || **line == '\\' || **line == ';')
 			error_check = SYNTAX_ERROR;
-		error_check = make_string_and_link_node(NORMAL, **line);
+		else
+			error_check = make_string_and_link_node(NORMAL, **line);
 	}
 	return (error_check);
 }
@@ -188,7 +191,7 @@ int		ft_is_in_expansion(char ch)
 	return (!(ft_isspace(ch) || ch == '|' || ch == '>' || ch == '<' || ch == ';' || ch == '/'));
 }
 
-int		find_env_var_and_mov_idx(char **line)
+int		find_env_var_and_mov_ptr(char **line)
 {
 	char	*start;
 	int		len;

@@ -23,6 +23,7 @@ int		at_white_spaces(char **line);
 
 
 int		expand_exit_status_and_append_string(void);
+int		ft_is_in_expansion(char ch);
 int		find_env_var_and_mov_ptr(char **line);
 int		only_find_env_var(char *start, int len);
 
