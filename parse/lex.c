@@ -74,6 +74,7 @@ int		at_single_quote(char **line)
 			return (SYNTAX_ERROR);
 		make_string_and_link_node(NORMAL, **line);
 	}
+	return (0);
 }
 
 int		at_double_quote(char **line)
@@ -119,6 +120,8 @@ int		expand_dollar_sign(char **line)
 		return (find_env_var_and_mov_ptr(line));
 	else if (ft_isspace(**line))
 		return (make_string_and_link_node(NORMAL, '$'));
+	else
+		return (0);
 }
 
 int		at_redirection_char(char **line)
@@ -141,6 +144,7 @@ int		at_redirection_char(char **line)
 	error_check = make_string_and_link_node(FINAL_WO_CHAR, 0);
 	if (error_check < 0)
 		return (error_check);
+	return (0);
 }
 
 int		at_white_spaces(char **line)
