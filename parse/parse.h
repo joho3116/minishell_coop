@@ -1,14 +1,15 @@
 #ifndef PARSE_H
 # define PARSE_H
 
-# define NORMAL 0
-# define FINAL_W_CHAR 1
-# define FINAL_WO_CHAR 2
-# define FOR_FREE 3
 
-# define END_LINE 0
-# define MALLOC_ERROR -2
-# define SYNTAX_ERROR -3
+
+typedef struct s_list t_list;
+
+typedef struct s_parsetmp
+{
+	int		num_of_cmds;
+	t_list	*num_of_tokens_in_one_cmd;
+}				t_parsetmp;
 
 int		tokenize(char *line);
 int		tokenize_return_check(int status);
@@ -32,4 +33,19 @@ int		append_char(char **buf, char ch);
 
 void	free_in_lex(void);
 
+/////////////////////////////////
+
+int		parse_all(void);
+
+int		count_parse(t_parsetmp *parsecnt, t_list *idx);
+
+int		ft_which_redirection_token(char *str);
+
+t_list	*make_int_ptr_node(int *ptr);
+
+int		*malloc_int_and_set_num(int num);
+
+void	free_in_parse(t_parsetmp *parsecnt);
+
+int		lst_add_num_of_redir(t_parsetmp *parsecnt, int redir_cnt);
 #endif

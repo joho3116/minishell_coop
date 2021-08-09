@@ -56,9 +56,9 @@ int		tokenize(char *line)
 int		tokenize_return_check(int status)
 {
 	if (status == 0)
-		return (make_string_and_link_node(FINAL_WO_CHAR, 0));
+		return (make_string_and_link_node(LEX_FINAL_WO_CHAR, 0));
 	else
-		return (make_string_and_link_node(FOR_FREE, 0));
+		return (make_string_and_link_node(LEX_FOR_FREE, 0));
 }
 
 ///////////////////////////////////////
@@ -124,11 +124,13 @@ int		expand_dollar_sign(char **line)
 		return (0);
 }
 
+// 리디렉션 토큰인 경우 마지막에 -1 char를 달아줘서 구분
+// (single quote로 리디렉션 토큰 같이 들어오면 구분이 안 되기 때문에)
 int		at_redirection_char(char **line)
 {
 	int	error_check;
 
-	error_check = make_string_and_link_node(FINAL_WO_CHAR, 0);
+	error_check = make_string_and_link_node(LEX_FINAL_WO_CHAR, 0);
 	if (error_check < 0)
 		return (error_check);
 	if (**line == '>' || **line == '<')
@@ -141,7 +143,10 @@ int		at_redirection_char(char **line)
 	error_check = make_string_and_link_node(NORMAL, **line);
 	if (error_check < 0)
 		return (error_check);
-	error_check = make_string_and_link_node(FINAL_WO_CHAR, 0);
+	error_check = make_string_and_link_node(NORMAL, -1);
+	if (error_check < 0)
+		return (error_check);
+	error_check = make_string_and_link_node(LEX_FINAL_WO_CHAR, 0);
 	if (error_check < 0)
 		return (error_check);
 	return (0);
@@ -151,7 +156,7 @@ int		at_white_spaces(char **line)
 {
 	int	error_check;
 
-	error_check = make_string_and_link_node(FINAL_WO_CHAR, 0);
+	error_check = make_string_and_link_node(LEX_FINAL_WO_CHAR, 0);
 	if (error_check < 0)
 		return (error_check);
 	while (ft_isspace(*(++*line)))
@@ -192,7 +197,8 @@ int		expand_exit_status_and_append_string(void)
 
 int		ft_is_in_expansion(char ch)
 {
-	return (!(ft_isspace(ch) || ch == '|' || ch == '>' || ch == '<' || ch == ';' || ch == '/'));
+	return (ft_isalpha(ch) || ft_isdigit(ch));
+	// return (!(ft_isspace(ch) || ch == '|' || ch == '>' || ch == '<' || ch == ';' || ch == '/'));
 }
 
 int		find_env_var_and_mov_ptr(char **line)
@@ -201,8 +207,8 @@ int		find_env_var_and_mov_ptr(char **line)
 	int		len;
 
 	start = *line;
-	while (!ft_is_in_expansion(*(++(*line))))
-		;
+	while (ft_is_in_expansion(**line))
+		(*line)++;
 	len = ((*line)--) - start;
 	return (only_find_env_var(start, len));
 }
@@ -240,16 +246,16 @@ int		make_string_and_link_node(int mode, char ch)
 	static char	*buf = NULL;
 	t_list		*tmp;
 
-	if (mode == FOR_FREE)
+	if (mode == LEX_FOR_FREE)
 	{
 		safe_free((void **)&buf);
 		return (0);
 	}
 	// 일단 들어온 문자를 buf스트링에 달아준다
-	if ((mode != FINAL_WO_CHAR) && (append_char(&buf, ch) < 0))
+	if ((mode != LEX_FINAL_WO_CHAR) && (append_char(&buf, ch) < 0))
 		return (MALLOC_ERROR);
 	// 스트링 마무리 지어야 되면 노드 만들어서 달고 리스트에 추가. 그 후 buf에 NULL 할당
-	if (mode == FINAL_W_CHAR || mode == FINAL_WO_CHAR)
+	if (mode == LEX_FINAL_W_CHAR || mode == LEX_FINAL_WO_CHAR)
 	{
 		if (buf == NULL)
 			return (0);
@@ -297,6 +303,6 @@ int		append_char(char **buf, char ch)
 // syntax error일 때 lex 종료 직전 free할 것들 free해주는 함수
 void	free_in_lex(void)
 {
-	make_string_and_link_node(FOR_FREE, 0);
+	make_string_and_link_node(LEX_FOR_FREE, 0);
 	ft_lstclear(&(g_info.lex_head), &free);
 }

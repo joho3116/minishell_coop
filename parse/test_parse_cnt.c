@@ -30,7 +30,8 @@ int main(int argc, char *argv[], char *envp[])
 		// printf("%p\n", g_info.lex_head);
 		// printf("|%s|\n", (char *)(g_info.lex_head->data));
 
-		ft_lstiter(g_info.lex_head, &print_lst);
+		// ft_lstiter(g_info.lex_head, &print_lst);
+		parse_all();
 		if (line != NULL)
 			free(line);
 		ft_lstclear(&(g_info.lex_head), &free);
