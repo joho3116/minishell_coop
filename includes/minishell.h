@@ -31,6 +31,9 @@ typedef	struct s_info
 	t_list			*lex_head;
 	char			**envp;
 	unsigned int	exit_status;
+	char			***cmds;
+	t_list			*cmd_redir_lst;
+	int				num_of_cmds;
 }				t_info;
 
 extern t_info g_info;

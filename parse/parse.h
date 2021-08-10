@@ -41,11 +41,17 @@ int		count_parse(t_parsetmp *parsecnt, t_list *idx);
 
 int		ft_which_redirection_token(char *str);
 
-t_list	*make_int_ptr_node(int *ptr);
+// t_list	*make_int_ptr_node(int *ptr);
 
 int		*malloc_int_and_set_num(int num);
 
 void	free_in_parse(t_parsetmp *parsecnt);
 
-int		lst_add_num_of_redir(t_parsetmp *parsecnt, int redir_cnt);
+int		lst_add_num_of_args(t_parsetmp *parsecnt, int args_cnt);
+
+int		only_alloc_space_for_cmds(t_parsetmp *parsecnt);
+
+int		only_alloc_space_for_cmds_sub(t_parsetmp *parsecnt, char ****tmp);
+
+int		only_alloc_space_for_cmds_error_return(t_parsetmp *parsecnt, char ****tmp);
 #endif
