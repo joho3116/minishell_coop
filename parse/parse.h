@@ -11,6 +11,12 @@ typedef struct s_parsetmp
 	t_list	*num_of_tokens_in_one_cmd;
 }				t_parsetmp;
 
+typedef struct s_redir_lst_nod
+{
+	int		type;
+	char	*path;
+}				t_redir_lst_nod;
+
 int		tokenize(char *line);
 int		tokenize_return_check(int status);
 
@@ -54,4 +60,17 @@ int		only_alloc_space_for_cmds(t_parsetmp *parsecnt);
 int		only_alloc_space_for_cmds_sub(t_parsetmp *parsecnt, char ****tmp);
 
 int		only_alloc_space_for_cmds_error_return(t_parsetmp *parsecnt, char ****tmp);
+
+int		parse_only_redirection(t_parsetmp *parsecnt, t_list *idx);
+
+int		lst_add_redirec_lst(t_parsetmp *parsecnt, t_list *data);
+
+void	fun_clear_redirec_lst(void *head);
+
+void	fun_clear_redirec_lst_data(void *data);
+
+int		append_on_redirec_lst_node(t_parsetmp *parsecnt, t_list **head_of_node, t_list **idx);
+
+int		append_on_redirec_lst_node_sub(t_parsetmp *parsecnt, t_list **head_of_node, t_list **idx);
+
 #endif
