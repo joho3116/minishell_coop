@@ -68,6 +68,8 @@ int		parse_all(void)
 		return (error_check);
 	// return (last_syntax_check());
 	// testprint_redirec_lst(); // only_alloc과 parse_only 테스트
+	ft_lstclear(&(parsecnt.num_of_tokens_in_one_cmd), &free);
+
 }
 
 // count해줘야 그에 맞게 동적 할당 가능
@@ -392,4 +394,25 @@ int	allocate_cmds(t_parsetmp *parsecnt)
 	(g_info.cmds)[i++][cmd_i] = NULL;
 	(g_info.cmds)[i] = NULL;
 	return (0);
+}
+
+// char **까지만 해제 char *는 lex해제할 때 해제됨
+void	free_cmds(void)
+{
+	int	i;
+
+	i = -1;
+	while ((g_info.cmds)[++i] != NULL)
+	{
+		free((g_info.cmds)[i]);
+	}
+	free(g_info.cmds);
+	g_info.cmds = NULL;
+}
+
+void	free_parse_malloc_in_global_var(void)
+{
+	ft_lstclear(&(g_info.cmd_redir_lst), &fun_clear_redirec_lst);
+	ft_lstclear(&(g_info.lex_head), &free);
+	free_cmds();
 }

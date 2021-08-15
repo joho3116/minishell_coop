@@ -9,6 +9,8 @@ typedef struct s_parsetmp
 {
 	int		num_of_cmds;
 	t_list	*num_of_tokens_in_one_cmd;
+	// ft_lstclear(&(parsecnt->num_of_tokens_in_one_cmd), &free);로 해제
+	// 오류 아니면 parse_all 끝날 때 해제
 }				t_parsetmp;
 
 typedef struct s_redir_lst_nod
@@ -75,5 +77,9 @@ int		append_on_redirec_lst_node_sub(t_parsetmp *parsecnt, t_list **head_of_node,
 
 
 int		allocate_cmds(t_parsetmp *parsecnt);
+
+void	free_cmds(void);
+
+void	free_parse_malloc_in_global_var(void);
 
 #endif

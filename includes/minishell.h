@@ -29,10 +29,15 @@
 typedef	struct s_info
 {
 	t_list			*lex_head;
+	// ft_lstclear(&(g_info.lex_head), &free);로 해제
 	char			**envp;
+	// 아마 동적할당으로?
 	unsigned int	exit_status;
 	char			***cmds;
+	// (char **)까지만 해제
+	// (char *)는 lex_head와 겹치니 이중 free하지 않게 주의
 	t_list			*cmd_redir_lst;
+	// ft_lstclear(&(g_ifno.cmd_redir_lst), &fun_clear_redirec_lst);로 해제
 	int				num_of_cmds;
 }				t_info;
 

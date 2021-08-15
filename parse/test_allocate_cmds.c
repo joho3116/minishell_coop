@@ -37,19 +37,21 @@ int main(int argc, char *argv[], char *envp[])
 		line = readline("$> ");
 		if (strcmp("EXIT", line) == 0)
 			break ;
-		tokenize(line);
 
 		// printf("%p\n", g_info.lex_head);
 		// printf("|%s|\n", (char *)(g_info.lex_head->data));
 
 		// ft_lstiter(g_info.lex_head, &print_lst);
-		parse_all();
-		print_cmds(); // for test
 		if (line != NULL)
+		{
+			tokenize(line);
+			parse_all();
+			// print_cmds(); // for test
 			free(line);
+			free_parse_malloc_in_global_var();
+		}
 
 
-		ft_lstclear(&(g_info.lex_head), &free);
 
 	}
 	// system("leaks a.out > ");
