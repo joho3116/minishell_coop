@@ -54,17 +54,20 @@ int		parse_all(void)
 	parsecnt.num_of_cmds = 0;
 	parsecnt.num_of_tokens_in_one_cmd = NULL;
 
-	error_check = count_parse(&parsecnt, g_info.lex_head);
+	error_check = count_parse(&parsecnt, g_info.lex_head); // 동적할당해줄 크기 카운트
 	if (error_check < 0)
 		return (error_check);
-	error_check = only_alloc_space_for_cmds(&parsecnt);
+	error_check = only_alloc_space_for_cmds(&parsecnt); // 실제로 동적할당
 	if (error_check < 0)
 		return (error_check);
-	error_check = parse_only_redirection(&parsecnt, g_info.lex_head);
+	error_check = parse_only_redirection(&parsecnt, g_info.lex_head); // 리디렉션 정보만 다중 리스트로 만들어주기
 	if (error_check < 0)
 		return (error_check);
-
-	testprint_redirec_lst(); // only_alloc과 parse_only 테스트
+	error_check = allocate_cmds(&parsecnt);
+	if (error_check < 0)
+		return (error_check);
+	// return (last_syntax_check());
+	// testprint_redirec_lst(); // only_alloc과 parse_only 테스트
 }
 
 // count해줘야 그에 맞게 동적 할당 가능
@@ -200,6 +203,7 @@ int		only_alloc_space_for_cmds_sub(t_parsetmp *parsecnt, char ****tmp)
 		num_tokens_idx = num_tokens_idx->next;
 	}
 	(*tmp)[i] = NULL;
+	g_info.cmds = (*tmp);
 	// printf("last %dth address = %p\n", i, (*tmp)[i]);
 	return (0);
 }
@@ -238,7 +242,7 @@ int		parse_only_redirection(t_parsetmp *parsecnt, t_list *idx)
 				return (MALLOC_ERROR);
 			head_of_node = NULL;
 		}
-		else if (token_check != NOT_REDIR)
+		else if (token_check != NOT_REDIR) // 리디렉션 토큰인 경우에만 들어오게 됨
 		{
 			error_check = append_on_redirec_lst_node(parsecnt, &head_of_node, &idx);
 			if (error_check < 0)
@@ -294,12 +298,14 @@ void	fun_clear_redirec_lst_data(void *data)
 	free(tmp);
 }
 
+// 리디렉션 토큰인 경우에만 호출됨
 int		append_on_redirec_lst_node(t_parsetmp *parsecnt, t_list **head_of_node, t_list **idx)
 {
 	t_list *i;
 
 	i = *idx;
 
+	// 리디렉션 다음에 다른 토큰 없거나 또 리디렉션 토큰인 경우 신택스 에러
 	if (i->next == NULL || ft_which_redirection_token(i->next->data) != NOT_REDIR)
 	{
 		ft_lstclear(head_of_node, &fun_clear_redirec_lst_data);
@@ -352,5 +358,38 @@ int		append_on_redirec_lst_node_sub(t_parsetmp *parsecnt, t_list **head_of_node,
 	nod->next = NULL;
 	ft_lstadd_back(head_of_node, nod);
 	(*idx) = (*idx)->next;
+	return (0);
+}
+
+int	allocate_cmds(t_parsetmp *parsecnt)
+{
+	int		token_check;
+	t_list	*idx;
+	int		i;
+	int		cmd_i;
+
+	idx = g_info.lex_head;
+	i = 0;
+	cmd_i = 0;
+	while (i < parsecnt->num_of_cmds && idx)
+	{
+		token_check = ft_which_redirection_token(idx->data);
+		if (token_check == PIPE)
+		{
+			(g_info.cmds)[i++][cmd_i] = NULL;
+			cmd_i = 0;
+		}
+		else if (token_check == NOT_REDIR) // 일반 토큰
+		{
+			(g_info.cmds)[i][cmd_i++] = (char *)(idx->data);
+		}
+		else // 리디렉션 토큰(그냥 넘어가면 됨; else문 삭제해도 될듯)
+		{
+			idx = idx->next;
+		}
+		idx = idx->next;
+	}
+	(g_info.cmds)[i++][cmd_i] = NULL;
+	(g_info.cmds)[i] = NULL;
 	return (0);
 }

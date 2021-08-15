@@ -73,4 +73,7 @@ int		append_on_redirec_lst_node(t_parsetmp *parsecnt, t_list **head_of_node, t_l
 
 int		append_on_redirec_lst_node_sub(t_parsetmp *parsecnt, t_list **head_of_node, t_list **idx);
 
+
+int		allocate_cmds(t_parsetmp *parsecnt);
+
 #endif
