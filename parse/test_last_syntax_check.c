@@ -54,10 +54,10 @@ int main(int argc, char *argv[], char *envp[])
 					printf("parse: %d\n", error_check);
 				}else{
 					// print_cmds(); // for test
-					free(line);
-					free_parse_malloc_in_global_var();
 				}
 			}
+			free(line);
+			free_parse_malloc_in_global_var();
 		}
 
 
