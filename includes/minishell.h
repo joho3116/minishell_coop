@@ -37,7 +37,7 @@ typedef	struct s_info
 	// (char **)까지만 해제
 	// (char *)는 lex_head와 겹치니 이중 free하지 않게 주의
 	t_list			*cmd_redir_lst;
-	// ft_lstclear(&(g_ifno.cmd_redir_lst), &fun_clear_redirec_lst);로 해제
+	// fun_clear_redirec_lst_all();로 free
 	int				num_of_cmds;
 }				t_info;
 

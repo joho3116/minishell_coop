@@ -67,6 +67,8 @@ int		parse_only_redirection(t_parsetmp *parsecnt, t_list *idx);
 
 int		lst_add_redirec_lst(t_parsetmp *parsecnt, t_list *data);
 
+void	fun_clear_redirec_lst_all(void);
+
 void	fun_clear_redirec_lst(void *head);
 
 void	fun_clear_redirec_lst_data(void *data);
