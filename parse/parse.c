@@ -231,7 +231,7 @@ int		parse_only_redirection(t_parsetmp *parsecnt, t_list *idx)
 {
 	int		token_check;
 	int		error_check;
-	t_list	*head_of_node;
+	t_list	*head_of_node; // 각 커맨드별 리디렉션 리스트
 
 	g_info.cmd_redir_lst = NULL;
 	head_of_node = NULL;
@@ -267,11 +267,26 @@ int		lst_add_redirec_lst(t_parsetmp *parsecnt, t_list *data)
 	{
 		ft_lstclear(&data, &fun_clear_redirec_lst_data); // 넣으려 했던 노드도 동적할당된 리스트이므로 해제
 		ft_lstclear(&(parsecnt->num_of_tokens_in_one_cmd), &free); // 커맨드별 토큰 갯수 리스트도 해제
-		ft_lstclear(&(g_info.cmd_redir_lst), &fun_clear_redirec_lst); // 커맨드별 리디렉션 리스트도 해제
+		fun_clear_redirec_lst_all();
 		ft_lstclear(&(g_info.lex_head), &free); // 토큰 리스트도 해제
 		return (MALLOC_ERROR);
 	}
 	ft_lstadd_back(&(g_info.cmd_redir_lst), nodtmp);
+}
+
+void	fun_clear_redirec_lst_all(void)
+{
+	t_list	*idx;
+	t_list	*temp;
+
+	idx = g_info.cmd_redir_lst;
+	while (idx)
+	{
+		temp = idx->next;
+		fun_clear_redirec_lst(idx->data);
+		idx = temp;
+	}
+	g_info.cmd_redir_lst = NULL;
 }
 
 void	fun_clear_redirec_lst(void *head)
@@ -279,9 +294,6 @@ void	fun_clear_redirec_lst(void *head)
 	t_list	*idx;
 	t_list	*tmp;
 
-	if (head == NULL)
-		return ;
-		// ft_lstclear(&(t_list *)head, &fun_clear_redirec_lst_data);
 	idx = head;
 	while (idx)
 	{
@@ -312,7 +324,7 @@ int		append_on_redirec_lst_node(t_parsetmp *parsecnt, t_list **head_of_node, t_l
 	{
 		ft_lstclear(head_of_node, &fun_clear_redirec_lst_data);
 		ft_lstclear(&(parsecnt->num_of_tokens_in_one_cmd), &free);
-		ft_lstclear(&(g_info.cmd_redir_lst), &fun_clear_redirec_lst);
+		fun_clear_redirec_lst_all();
 		ft_lstclear(&(g_info.lex_head), &free);
 		return (SYNTAX_ERROR);
 	}
@@ -330,7 +342,7 @@ int		append_on_redirec_lst_node_sub(t_parsetmp *parsecnt, t_list **head_of_node,
 	{
 		ft_lstclear(head_of_node, &fun_clear_redirec_lst_data);
 		ft_lstclear(&(parsecnt->num_of_tokens_in_one_cmd), &free);
-		ft_lstclear(&(g_info.cmd_redir_lst), &fun_clear_redirec_lst);
+		fun_clear_redirec_lst_all();
 		ft_lstclear(&(g_info.lex_head), &free);
 		return (MALLOC_ERROR);
 	}
@@ -340,7 +352,7 @@ int		append_on_redirec_lst_node_sub(t_parsetmp *parsecnt, t_list **head_of_node,
 	{
 		ft_lstclear(head_of_node, &fun_clear_redirec_lst_data);
 		ft_lstclear(&(parsecnt->num_of_tokens_in_one_cmd), &free);
-		ft_lstclear(&(g_info.cmd_redir_lst), &fun_clear_redirec_lst);
+		fun_clear_redirec_lst_all();
 		ft_lstclear(&(g_info.lex_head), &free);
 		free(data);
 		return (MALLOC_ERROR);
@@ -350,7 +362,7 @@ int		append_on_redirec_lst_node_sub(t_parsetmp *parsecnt, t_list **head_of_node,
 	{
 		ft_lstclear(head_of_node, &fun_clear_redirec_lst_data);
 		ft_lstclear(&(parsecnt->num_of_tokens_in_one_cmd), &free);
-		ft_lstclear(&(g_info.cmd_redir_lst), &fun_clear_redirec_lst);
+		fun_clear_redirec_lst_all();
 		ft_lstclear(&(g_info.lex_head), &free);
 		free(data->path);
 		free(data);
@@ -412,7 +424,7 @@ void	free_cmds(void)
 
 void	free_parse_malloc_in_global_var(void)
 {
-	ft_lstclear(&(g_info.cmd_redir_lst), &fun_clear_redirec_lst);
+	fun_clear_redirec_lst_all();
 	ft_lstclear(&(g_info.lex_head), &free);
 	free_cmds();
 }
