@@ -1,50 +1,5 @@
 #include "../includes/minishell.h"
-///////////////////////////테스트용 함수
-#include <stdio.h>
 
-void	testprint_num_token(void *data)
-{
-	printf("|%d|\n", *(int *)data);
-}
-
-void	testprint_count_parse(t_parsetmp *parsecnt)
-{
-	printf("num of cmds = %d\n", parsecnt->num_of_cmds);
-	ft_lstiter(parsecnt->num_of_tokens_in_one_cmd, &testprint_num_token);
-}
-
-void	testprint_redirec_lst()
-{
-	int i = 0;
-	t_list *idx = g_info.cmd_redir_lst;
-	while (idx)
-	{
-		printf("#%d cmd\n", i);
-		t_list *tmp = idx->data;
-		// if (tmp = NULL)
-			printf("tmp = %p\n", tmp);
-		while (tmp)
-		{
-			printf("\t");
-			if (((t_redir_lst_nod*)(tmp->data))->type == IN_REDIR)
-				printf("<");
-			else if (((t_redir_lst_nod*)(tmp->data))->type == OUT_REDIR)
-				printf(">");
-			else if (((t_redir_lst_nod*)(tmp->data))->type == IN_REDIR_LIM)
-				printf("<<");
-			else if (((t_redir_lst_nod*)(tmp->data))->type == OUT_REDIR_APP)
-				printf(">>");
-			printf(" |%s|\n", ((t_redir_lst_nod*)(tmp->data))->path);
-			tmp = tmp->next;
-		}
-		idx = idx->next;
-		++i;
-	}
-
-}
-
-
-///////////////////////////테스트용 함수 끝
 int		parse_all(void)
 {
 	t_parsetmp	parsecnt;
@@ -66,9 +21,9 @@ int		parse_all(void)
 	error_check = allocate_cmds(&parsecnt);
 	if (error_check < 0)
 		return (error_check);
-	// return (last_syntax_check());
-	// testprint_redirec_lst(); // only_alloc과 parse_only 테스트
 	ft_lstclear(&(parsecnt.num_of_tokens_in_one_cmd), &free);
+	return (last_syntax_check());
+	// testprint_redirec_lst(); // only_alloc과 parse_only 테스트
 
 }
 
@@ -429,4 +384,23 @@ void	free_parse_malloc_in_global_var(void)
 	fun_clear_redirec_lst_all();
 	ft_lstclear(&(g_info.lex_head), &free);
 	free_cmds();
+}
+
+// 최종적으로 거르지 못한 신택스 에러 체크
+// 1. g_info.cmd_redir_lst에서 data가 NULL인 것 발견시 신택스 에러
+int		last_syntax_check(void)
+{
+	t_list	*idx;
+	int		i;
+
+	idx = g_info.cmd_redir_lst;
+	i = 0;
+	while (idx)
+	{
+		if (g_info.cmds[i][0] == NULL && idx->data == NULL)
+			return (SYNTAX_ERROR);
+		idx = idx->next;
+		++i;
+	}
+	return (0);
 }

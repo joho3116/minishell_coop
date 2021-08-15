@@ -84,4 +84,6 @@ void	free_cmds(void);
 
 void	free_parse_malloc_in_global_var(void);
 
+int		last_syntax_check(void);
+
 #endif
