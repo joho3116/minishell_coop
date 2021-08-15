@@ -284,6 +284,7 @@ void	fun_clear_redirec_lst_all(void)
 	{
 		temp = idx->next;
 		fun_clear_redirec_lst(idx->data);
+		free(idx);
 		idx = temp;
 	}
 	g_info.cmd_redir_lst = NULL;
@@ -299,6 +300,7 @@ void	fun_clear_redirec_lst(void *head)
 	{
 		tmp = idx->next;
 		fun_clear_redirec_lst_data(idx->data);
+		free(idx);
 		idx = tmp;
 	}
 }
