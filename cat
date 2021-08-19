@@ -1,0 +1,64 @@
+drwxr-xr-x chanhlee chanhlee 4.0 KB Thu Aug  5 21:18:43 2021 .
+drwxr-xr-x chanhlee chanhlee 4.0 KB Thu Aug  5 16:58:04 2021 ..
+drwxr-xr-x chanhlee chanhlee 4.0 KB Thu Aug  5 00:20:08 2021 .git
+.rw-r--r-- chanhlee chanhlee   0 B  Thu Aug  5 21:48:25 2021 cat
+drwxr-xr-x chanhlee chanhlee 4.0 KB Thu Aug  5 21:18:49 2021 includes
+drwxr-xr-x chanhlee chanhlee 4.0 KB Thu Aug  5 21:18:58 2021 parse
+drwxr-xr-x chanhlee chanhlee 4.0 KB Wed Aug  4 20:24:04 2021 signal
+// 토큰 단위로 커맨드 분해
+
+// ex1)
+// ls -al|cat<inputfile>outputfile
+// => "ls" "-al" "|" "cat" "<" "inputfile" ">" "outputfile"
+
+// ex2)
+// ls "-al|cat<inputfile>outputfile"
+// => "ls" "-al|cat<inputfile>outputfile"
+
+// readline에서 받은 스트링을 토큰 단위로 분해해준다.
+// 인자로 char **의 주소값(char ***)을 받아서 참조를 통해 분해한 스트링의 배열을 넘겨준다.
+
+// 동적 할당 실패시 -1 반환, 정상 종료시 0 반환
+
+//------------------------------------
+
+// '$'의 확장도 이 단계에서 해줘야 할 것 같다.
+
+// 함수 바깥에서 free등의 처리를 일관성 있게 하기 위해 아무 인자가 없는 빈 스트링이 들어온 경우에도 동적 할당을 하는 쪽으로 생각
+
+
+#include "../includes/parse.h"
+
+int		tokenize(char *line, char ***cmd)
+{
+	int	i;
+	int	num_tokens;
+
+	num_tokens = count_number_of_tokens(line);
+	i = 0;
+	while (line[i])
+	{
+
+	}
+}
+
+
+// 특별히 처리해줘야 할 문자들 : '(single quote), "(double quote), \(escape sequence), $(환경변수 확장), >, <, |
+int		count_number_of_tokens(char *line)
+{
+	int	ret;
+
+	ret = 0;
+	while (*line)
+	{
+		if (*line == '\'')
+			skip_single_quotation(&line);
+		++line;
+	}
+}
+
+// 
+void	skip_single_quotation(char **line)
+{
+
+}
