@@ -3,12 +3,17 @@
 
 # include "../libft/libft.h"
 # include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <errno.h>
+# include <sys/stat.h> // S_IRUSR 매크로 위해(norm 위반? 맥에서는 빼도 돌아가니 나중에 빼기)
 # include <readline/readline.h>
 # include <readline/history.h>
 
 
 # include "../parse/parse.h"
 # include "../utils/utils.h"
+# include "../pipe/pipe.h"
 
 # define NORMAL 0
 # define LEX_FINAL_W_CHAR 1

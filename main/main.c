@@ -15,6 +15,7 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char	*line;
 	int		error_check;
+	int		return_value;
 
 	/*
 	** int init_minishell(char *envp[]);
@@ -32,6 +33,14 @@ int	main(int argc, char *argv[], char *envp[])
 		exit(1);
 	}
 
+	/*
+	**	1. readline으로 입력받기
+	**	2. 히스토리에 더해줄 것이면 더해주기
+	**	3. 토큰화하기
+	**	4. parse하기
+	**	5. 커맨드 실행
+	**	6. free하기
+	*/
 	while (1)
 	{
 		// 아직 새 줄에 아무 것도 입력되지 않은 상태에서 readline에 EOF가 들어오면 NULL반환
@@ -42,12 +51,12 @@ int	main(int argc, char *argv[], char *envp[])
 		*/
 		// 들어온 스트링이 화이트 스페이스만 있으면 에러 리턴
 		// 화이트 스페이스가 아닌 것이 있으면 0 리턴
-		if (!line || is_not_only_white_spaces(line))
+		if (line && is_not_only_white_spaces(line))
 			add_history(line);
 		error_check = tokenize(line);
 		if (error_check < 0)
 		{
-			print_error(error_check);
+			print_error_before_run_cmd(error_check);
 			ft_lstclear(g_info.lex_head, &free);
 			free(line);
 			continue ;
@@ -60,7 +69,7 @@ int	main(int argc, char *argv[], char *envp[])
 			*/
 			// 전역변수 내 free할 것들 free
 			free_parse_malloc_in_global_var();
-			print_error(error_check);
+			print_error_before_run_cmd(error_check);
 			free(line);
 			continue ;
 		}
@@ -68,14 +77,7 @@ int	main(int argc, char *argv[], char *envp[])
 		**	int run_cmd(void);
 		*/
 		// 실행?
-		error_check = run_cmd();
-		if (error_check < 0)
-		{
-			free_parse_malloc_in_global_var();
-			print_error(error_check);
-			free(line);
-			continue ;
-		}
+		g_info.exit_status = run_cmd();
 		free_parse_malloc_in_global_var();
 		free(line);
 	}
