@@ -53,8 +53,6 @@ int		ft_which_redirection_token(char *str);
 
 int		*malloc_int_and_set_num(int num);
 
-void	free_in_parse(t_parsetmp *parsecnt);
-
 int		lst_add_num_of_args(t_parsetmp *parsecnt, int args_cnt);
 
 int		only_alloc_space_for_cmds(t_parsetmp *parsecnt);

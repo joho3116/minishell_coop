@@ -27,6 +27,9 @@ int		parse_all(void)
 
 }
 
+/////////////////////////////////////////////
+
+
 // count해줘야 그에 맞게 동적 할당 가능
 // idx 매개 변수는 줄 수 줄이기 위한 꼼수
 int		count_parse(t_parsetmp *parsecnt, t_list *idx)
@@ -95,11 +98,6 @@ int		*malloc_int_and_set_num(int num)
 	return (tmp);
 }
 
-void	free_in_parse(t_parsetmp *parsecnt)
-{
-	ft_lstclear(&(parsecnt->num_of_tokens_in_one_cmd), &free);
-}
-
 int		lst_add_num_of_args(t_parsetmp *parsecnt, int args_cnt)
 {
 	int		*inttmp;
@@ -123,6 +121,9 @@ int		lst_add_num_of_args(t_parsetmp *parsecnt, int args_cnt)
 	ft_lstadd_back(&(parsecnt->num_of_tokens_in_one_cmd), nodtmp);
 	return (0);
 }
+//////////////////////////////////////////////
+//////////////////////////////////////////
+
 
 int		only_alloc_space_for_cmds(t_parsetmp *parsecnt)
 {
@@ -181,6 +182,10 @@ int		only_alloc_space_for_cmds_error_return(t_parsetmp *parsecnt, char ****tmp)
 	*tmp = NULL;
 	return (MALLOC_ERROR);
 }
+
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+
 
 int		parse_only_redirection(t_parsetmp *parsecnt, t_list *idx)
 {
@@ -332,6 +337,9 @@ int		append_on_redirec_lst_node_sub(t_parsetmp *parsecnt, t_list **head_of_node,
 	return (0);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+
 int	allocate_cmds(t_parsetmp *parsecnt)
 {
 	int		token_check;
@@ -379,12 +387,18 @@ void	free_cmds(void)
 	g_info.cmds = NULL;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+
 void	free_parse_malloc_in_global_var(void)
 {
 	fun_clear_redirec_lst_all();
 	ft_lstclear(&(g_info.lex_head), &free);
 	free_cmds();
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
 
 // 최종적으로 거르지 못한 신택스 에러 체크
 // 1. g_info.cmd_redir_lst에서 data가 NULL인 것 발견시 신택스 에러
