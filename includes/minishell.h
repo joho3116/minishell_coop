@@ -34,6 +34,7 @@
 # define REDIR_INFO_NODE_NULL -6
 # define READ_ERROR -7
 # define OPEN_ERROR -8
+# define ERRNO_SET -9
 
 # define IN_REDIR 11
 # define OUT_REDIR 12
