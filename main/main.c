@@ -1,9 +1,9 @@
-#include "minishell.h"
+#include "../includes/minishell.h"
 #include <stdio.h>
 
 t_info	g_info;
 
-void print_hex(char *line){
+void	print_hex(char *line){
 	printf("|");
 	for (int i = 0; line[i] != '\0'; i++){
 		printf("%#.2x ", line[i]);
@@ -11,9 +11,23 @@ void print_hex(char *line){
 	printf("|\n");
 }
 
+int	init_minishell_envp(char *envp[])
+{
+	t_list	*idx;
+
+	g_info.env = ft_lstnew(*envp);
+	while(*envp++)
+	{
+		idx = ft_lstnew(*envp);
+		ft_lstadd_back(g_info.env, idx);
+	}
+	return (1);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*line;
+	t_info	info;
 	int		error_check;
 
 	/*
@@ -21,7 +35,8 @@ int	main(int argc, char *argv[], char *envp[])
 	*/
 	// 환경변수를 전역변수안에 넣어주기(환경변수 추가 가능해야 하므로 그냥 포인터만 넘기지 않고 새로 동적할당하는 방향으로 구현)
 	// 반환값은 에러 체크용
-	error_check = init_minishell(envp);
+	info = malloc(sizeof(t_info));
+	error_check = init_minishell_envp(envp);
 	if (error_check < 0)
 	{
 		/*
