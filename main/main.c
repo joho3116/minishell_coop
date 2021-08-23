@@ -22,6 +22,7 @@ int	main(int argc, char *argv[], char *envp[])
 	*/
 	// 환경변수를 전역변수안에 넣어주기(환경변수 추가 가능해야 하므로 그냥 포인터만 넘기지 않고 새로 동적할당하는 방향으로 구현)
 	// 반환값은 에러 체크용
+	// 파이프할 때 쓸 stdin, stdout fd 백업하기(dup2(0, STDIN_BACKUP_FD); , dup2(1, STDOUT_BACKUP_FD);)
 	error_check = init_minishell(envp);
 	if (error_check < 0)
 	{
