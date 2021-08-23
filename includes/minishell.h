@@ -5,6 +5,9 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
+# include <stdio.h>
+# include <unistd.h>
 
 
 # include "../parse/parse.h"
@@ -30,8 +33,8 @@ typedef	struct s_info
 {
 	t_list			*lex_head;
 	// ft_lstclear(&(g_info.lex_head), &free);로 해제
-	char			**envp;
-	// 아마 동적할당으로?
+	t_list			*env;
+	// 아마 동적할당으로? -> t_list 형태로 데이터에 키와 밸류 문자열로 삽입, 따로 출력해야할 경우 split을 이용하면 될 듯...?
 	unsigned int	exit_status;
 	char			***cmds;
 	// (char **)까지만 해제

@@ -1,4 +1,3 @@
-
 #include "../includes/minishell.h"
 
 t_info g_info;
