@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "../includes/minishell.h"
 
 void	print_prompt(void)
 {
@@ -28,17 +28,17 @@ void	sig_handler(int signum)
 	}
 }
 
-int		main()
-{
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, sig_handler);
-	signal(SIGTERM, sig_handler);
-	while (1)
-	{
-		printf("what?\n");
-		pause();
-	}
-}
+// int		main()
+// {
+// 	signal(SIGINT, sig_handler);
+// 	signal(SIGQUIT, sig_handler);
+// 	signal(SIGTERM, sig_handler);
+// 	while (1)
+// 	{
+// 		printf("what?\n");
+// 		pause();
+// 	}
+// }
 
 
 // - SIGINT (Ctrl - C)

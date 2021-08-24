@@ -1,13 +1,5 @@
 #include "../includes/minishell.h"
 
-// key의 value를 new_value로 교체
-// new_value는 동적할당된 것이어야 함
-// key를 찾지 못할 경우 음수값 리턴
-// new_value == NULL이면 unset해버리기?
-int	set_new_value_to_key(char *key, char *new_value)
-{
-
-}
 
 int	change_dir_to_arg(char *dir)
 {
@@ -25,7 +17,7 @@ int	change_dir_to_arg(char *dir)
 	// OLDPWD 변수를 tmp1의 값으로 교체
 	// OLDPWD가 이미 unset되었으면 음수 반환받음.
 	// 어쨌거나 cd커맨드에는 상관 없으므로 에러 처리 하지 않기로
-	set_new_value_to_key("OLDPWD", tmp);
+	set_new_value_to_existing_key("OLDPWD", tmp);
 
 
 	// chdir()해서 cdw 바꿔준다.
@@ -49,7 +41,7 @@ int	change_dir_to_arg(char *dir)
 	// PWD 변수를 위에서 할당 받은 현재 경로 스트링으로 교체
 	// PWD가 이미 unset되었으면 음수 반환받음.
 	// 어쨌거나 cd커맨드에는 상관 없으므로 에러 처리 하지 않기로
-	set_new_value_to_key("PWD", tmp);
+	set_new_value_to_existing_key("PWD", tmp);
 	return (0);
 }
 
