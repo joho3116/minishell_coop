@@ -76,4 +76,5 @@ int		allocate_cmds(t_count_info_in_parse *parsecnt);
 int		allocate_cmds_sub(t_count_info_in_parse *parsecnt, t_list **idx, int *i, int *cmd_i);
 void	free_cmds(void);
 
+
 #endif
