@@ -30,7 +30,7 @@ int main(int argc, char *argv[], char *envp[])
 	char *buf = NULL;
 
 	g_info.lex_head = NULL;
-	g_info.envp = envp;
+	// g_info.envp = envp;sfs
 	g_info.exit_status = 125;
 	while (1)
 	{
@@ -53,7 +53,7 @@ int main(int argc, char *argv[], char *envp[])
 				if (error_check != 0){
 					printf("parse: %d\n", error_check);
 				}else{
-					// print_cmds(); // for test
+					print_cmds(); // for test
 				}
 			}
 			free(line);
