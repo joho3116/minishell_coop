@@ -10,11 +10,14 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <stdbool.h>
 
 
 # include "../parse/parse.h"
 # include "../utils/utils.h"
 # include "../pipe/pipe.h"
+# include "../env/env.h"
+# include "../builtin/builtin.h"
 
 # define OUT_REDIR_PERMISSION_BIT (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 
@@ -33,6 +36,10 @@
 # define REDIR_INFO_NODE_NULL -6
 # define READ_ERROR -7
 # define OPEN_ERROR -8
+# define HOME_NOT_FOUND -9
+# define STD_FD_RESTORE_FAIL -10
+# define ERRNO_SET -11
+
 
 # define IN_REDIR 11
 # define OUT_REDIR 12
@@ -48,7 +55,7 @@ typedef	struct s_info
 {
 	t_list			*lex_head;
 	// ft_lstclear(&(g_info.lex_head), &free);로 해제
-	char			**envp;
+	t_list			*env;
 	// 아마 동적할당으로?
 	unsigned int	exit_status;
 	char			***cmds;
@@ -60,5 +67,8 @@ typedef	struct s_info
 }				t_info;
 
 extern t_info g_info;
+
+bool	is_only_white_spaces(char *line);
+
 
 #endif
