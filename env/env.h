@@ -37,3 +37,5 @@ char	**get_env_list(void);
 char	*unite_key_value(int i, t_list *idx);
 
 void	free_envp_list(char **envp);
+
+char	*find_key_and_return_value(char *key);
