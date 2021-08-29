@@ -188,6 +188,7 @@ char	**get_env_list(void)
 		++i;
 		idx = idx->next;
 	}
+	ret[i] = NULL;
 	return (ret);
 }
 
