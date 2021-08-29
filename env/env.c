@@ -196,6 +196,21 @@ char	**get_env_list(void)
 	return (ret);
 }
 
+int		count_env_num()
+{
+	int		i;
+	t_list	*idx;
+
+	i = 0;
+	idx = g_info.env;
+	while (idx)
+	{
+		++i;
+		idx = idx->next;
+	}
+	return (i);
+}
+
 char	*unite_key_value(int i, t_list *idx)
 {
 	int		len;
