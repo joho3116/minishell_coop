@@ -222,7 +222,14 @@ char	*unite_key_value(int i, t_list *idx)
 
 void	free_envp_list(char **envp)
 {
+	int	i;
 
+	i = -1;
+	while (envp[+i] != NULL)
+	{
+		free(envp[i]);
+	}
+	free(envp);
 }
 
 // 각 주석 블럭마다 맨 앞에 테스트 설명 적어놓았습니다.
