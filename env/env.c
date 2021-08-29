@@ -167,6 +167,25 @@ int	set_new_key(char *key_and_value)
 	ft_lstadd_back(&(g_info.env), node);
 }
 
+// key에 해당하는 변수가 있는지 찾고 있으면 value의 스트링 반환
+// 없으면 null 반환
+// 스트링은 직접적인 value값이므로 수정하지 않게 주의
+char	*find_key_and_return_value(char *key)
+{
+	t_list *idx;
+
+	idx = g_info.env;
+	while (idx)
+	{
+		if (ft_strcmp(key, ((t_env_node*)(idx->data))->key) == 0)
+			break ;
+		idx = idx->next;
+	}
+	if (idx == NULL)
+		return (NULL);
+	else
+		return (((t_env_node*)(idx->data))->value);
+}
 
 // 각 주석 블럭마다 맨 앞에 테스트 설명 적어놓았습니다.
 // 모두 valgrind로 메모리 누수 체크 완료

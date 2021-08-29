@@ -5,11 +5,13 @@ void print_error(int error_type, char *opt)
 {
 	if (error_type == MALLOC_ERROR)
 	{
-		ft_perror(strerror(errno));
+		ft_perror(opt);
 	}
 	else if (error_type == SYNTAX_ERROR)
 	{
-		ft_putstr_fd("parse error\n", 2);
+		ft_putstr_fd("parse error", 2);
+		ft_putstr_fd(opt, 2);
+		ft_putstr_fd("\n", 2);
 	}
 	else if (error_type == CMD_NOT_FOUND)
 	{
@@ -31,7 +33,7 @@ void print_error(int error_type, char *opt)
 	}
 	else if (error_type == READ_ERROR)
 	{
-		ft_perror(strerror(errno));
+		ft_perror(opt);
 	}
 	else
 	{

@@ -43,7 +43,7 @@ int	main(int argc, char *argv[], char *envp[])
 		** void print_error(int error_type);
 		*/
 		// 적절한 에러 문구를 출력해준다.
-		print_error(error_check);
+		print_error(error_check, MALLOC_ERROR);
 		exit(1);
 	}
 
@@ -62,7 +62,6 @@ int	main(int argc, char *argv[], char *envp[])
 		error_check = tokenize(line);
 		if (error_check < 0)
 		{
-			print_error(error_check);
 			ft_lstclear(g_info.lex_head, &free);
 			free(line);
 			continue ;
@@ -75,7 +74,6 @@ int	main(int argc, char *argv[], char *envp[])
 			*/
 			// 전역변수 내 free할 것들 free
 			free_parse_malloc_in_global_var();
-			print_error(error_check);
 			free(line);
 			continue ;
 		}
@@ -87,7 +85,6 @@ int	main(int argc, char *argv[], char *envp[])
 		if (error_check < 0)
 		{
 			free_parse_malloc_in_global_var();
-			print_error(error_check);
 			free(line);
 			continue ;
 		}
