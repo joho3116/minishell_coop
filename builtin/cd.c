@@ -8,7 +8,7 @@ int	change_dir_to_arg(char *dir)
 	// getcwd로 현재 pwd 받는다.(동적할당됨)
 	// 동적할당 NULL 가드
 	tmp = getcwd(NULL, 0);
-	if (tmp != NULL)
+	if (tmp == NULL)
 	{
 		print_error(MALLOC_ERROR, "cd");
 		return (1);
@@ -31,7 +31,7 @@ int	change_dir_to_arg(char *dir)
 	// getcwd(NULL, 0);으로 현재 경로 스트링 동적 할당받기
 	// 동적할당 에러 가드(에러 출력 및 리턴 1)
 	tmp = getcwd(NULL, 0);
-	if (tmp != NULL)
+	if (tmp == NULL)
 	{
 		print_error(MALLOC_ERROR, "cd");
 		return (1);

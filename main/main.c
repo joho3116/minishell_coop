@@ -22,17 +22,38 @@ bool	is_only_white_spaces(char *line)
 	return (true);
 }
 
+////////////////////////test
+void	print_double_array(char **arr)
+{
+	for (int i = 0; arr[i] != NULL; i++){
+		printf("|%s|\n", arr[i]);
+	}
+}
+
+///////////
+
 int	main(int argc, char *argv[], char *envp[])
 {
+	++argc;
+	++argv;
+
 	char	*line;
 	int		error_check;
 
+	dup2(0, STDIN_BACKUP_FD);
+	dup2(1, STDOUT_BACKUP_FD);
 	/*
 	** int init_minishell(char *envp[]);
 	*/
 	// 환경변수를 전역변수안에 넣어주기(환경변수 추가 가능해야 하므로 그냥 포인터만 넘기지 않고 새로 동적할당하는 방향으로 구현)
 	// 반환값은 에러 체크용
 	error_check = init_minishell_envp(envp);
+
+
+	print_double_array(get_env_list());
+
+
+
 	if (error_check < 0)
 	{
 		/*

@@ -4,14 +4,8 @@
 int	init_minishell_envp(char *envp[])
 {
 	int			i;
-	char		*key_tmp;
-	char		*value_tmp;
-	t_env_node	*data;
-	t_list		*node;
 
 	i = -1;
-	key_tmp = NULL;
-	value_tmp = NULL;
 	while (envp[++i] != NULL)
 	{
 		if (set_new_key(envp[i]) < 0)
@@ -165,6 +159,7 @@ int	set_new_key(char *key_and_value)
 		return (-1);
 	}
 	ft_lstadd_back(&(g_info.env), node);
+	return (0);
 }
 
 // 호출하는 커맨드가 다양하므로 에러 문구를 해당 커맨드에서 출력하게 한다.
@@ -184,7 +179,7 @@ char	**get_env_list(void)
 	idx = g_info.env;
 	while (idx)
 	{
-		ret[i] = unite_key_value(i, idx);
+		ret[i] = unite_key_value(idx);
 		if (ret[i] == NULL)
 		{
 			free_envp_list(ret);
@@ -193,10 +188,26 @@ char	**get_env_list(void)
 		++i;
 		idx = idx->next;
 	}
+	ret[i] = NULL;
 	return (ret);
 }
 
-char	*unite_key_value(int i, t_list *idx)
+int		count_env_num()
+{
+	int		i;
+	t_list	*idx;
+
+	i = 0;
+	idx = g_info.env;
+	while (idx)
+	{
+		++i;
+		idx = idx->next;
+	}
+	return (i);
+}
+
+char	*unite_key_value(t_list *idx)
 {
 	int		len;
 	char	*ret;
@@ -231,6 +242,24 @@ void	free_envp_list(char **envp)
 	}
 	free(envp);
 }
+
+char	*find_key_and_return_value(char *key)
+{
+	t_list *idx;
+
+	idx = g_info.env;
+	while (idx)
+	{
+		if (ft_strcmp(key, ((t_env_node*)(idx->data))->key) == 0)
+			break ;
+		idx = idx->next;
+	}
+	if (idx == NULL)
+		return (NULL);
+	else
+		return (((t_env_node*)(idx->data))->value);
+}
+
 
 // 각 주석 블럭마다 맨 앞에 테스트 설명 적어놓았습니다.
 // 모두 valgrind로 메모리 누수 체크 완료

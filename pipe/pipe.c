@@ -15,10 +15,15 @@ int	run_cmd(void)
 
 int	is_builtin(char *str)
 {
-	return (!ft_strcmp(g_info.cmds[0][0], "echo") || !ft_strcmp(g_info.cmds[0][0], "cd")
-		|| !ft_strcmp(g_info.cmds[0][0], "pwd") || !ft_strcmp(g_info.cmds[0][0], "export")
-		|| !ft_strcmp(g_info.cmds[0][0], "unset") || ft_strcmp(g_info.cmds[0][0], "env")
-		|| !ft_strcmp(g_info.cmds[0][0], "exit"));
+	// int	ret =(!ft_strcmp(g_info.cmds[0][0], "echo") || !ft_strcmp(g_info.cmds[0][0], "cd")
+	// 	|| !ft_strcmp(g_info.cmds[0][0], "pwd") || !ft_strcmp(g_info.cmds[0][0], "export")
+	// 	|| !ft_strcmp(g_info.cmds[0][0], "unset") || !ft_strcmp(g_info.cmds[0][0], "env")
+	// 	|| !ft_strcmp(g_info.cmds[0][0], "exit"));
+	// printf("\nret %s = %d\n", str, ret);
+	return (!ft_strcmp(str, "echo") || !ft_strcmp(str, "cd")
+		|| !ft_strcmp(str, "pwd") || !ft_strcmp(str, "export")
+		|| !ft_strcmp(str, "unset") || !ft_strcmp(str, "env")
+		|| !ft_strcmp(str, "exit"));
 }
 
 ////////////////////////////////////////////////
@@ -54,7 +59,7 @@ int	run_only_one_cmd_builtin(int i)
 	if (error_check < 0)
 	{
 		error_check = restore_stdin_stdout();
-		print_error(error_check, g_info.cmds[i][0];
+		print_error(error_check, g_info.cmds[i][0]);
 		return (error_check);
 	}
 	error_check = check_output_redirection(i, not_pipe);
@@ -67,6 +72,8 @@ int	run_only_one_cmd_builtin(int i)
 
 	if (ft_strcmp(g_info.cmds[i][0], "echo") == 0)
 	{
+		// debug
+		// printf("echo in\n");////////////////////////////////
 		ret = builtin_echo(i);
 	}
 	else if (ft_strcmp(g_info.cmds[i][0], "cd") == 0)
@@ -113,6 +120,7 @@ int	run_only_one_cmd_not_builtin(int i)
 	if (pid == 0)
 	{
 		try_builtin_or_execve(i);
+		return (0);
 	}
 	else if (pid > 0)
 	{
@@ -163,13 +171,19 @@ int	run_pipe(void)
 
 	// int	last = 9; // 커맨드 갯수
 	int i = -1;
-
+	pipe0[0] = 0;
+	pipe0[1] = 1;
 	while (g_info.cmds[++i] != NULL){
 		// if (idx == last){
 		// 	break ;
 		// }
+		// ft_putstr_fd("|", 2);//////////////////
+		// ft_putstr_fd(g_info.cmds[i][0], 2);//////////
+		// ft_putstr_fd("|", 2);/////////////////
+		// ft_putstr_fd("\n", 2);/////
 		pipe(pipe1);
 		fd = fork();
+
 		if (fd == 0)
 		{ // child
 		// 공통
@@ -180,17 +194,20 @@ int	run_pipe(void)
 				close(pipe0[1]);
 				dup2(pipe0[0], 0);
 			}
-//////////////////////////////
+			//////////////////////////////
 
-		// input redirection
-			inputfd = check_input_redirection(i, pipe1); // readend는 닫힌 상태
+			// input redirection
+			inputfd = check_input_redirection(i, pipe0); // readend는 닫힌 상태
 			if (inputfd < 0)
 			{
+				// printf("here\n");
 				print_error(inputfd, g_info.cmds[i][0]);
 				exit(1);
 			}
-		////////////////////////////
+			////////////////////////////
 
+			//debug
+			// write(1, "input_redirec_Fin\n", ft_strlen("input_redirec_Fin\n"));  //////////////debug
 
 
 
@@ -199,11 +216,13 @@ int	run_pipe(void)
 			close(pipe1[0]);
 			if (g_info.cmds[i + 1] == NULL){
 				close(pipe1[1]);
+				// ft_putstr_fd(g_info.cmds[i][0], 1);//////////debug
+				// ft_putstr_fd("\n\nsfsfsfs", 1); //////////////debug
 			}else{
 				dup2(pipe1[1], 1);
 			}
 			////////////////////////
-		// output redirectio
+			// output redirectio
 			outputfd = check_output_redirection(i, pipe1);
 			if (outputfd < 0)
 			{
@@ -222,8 +241,10 @@ int	run_pipe(void)
 				close(pipe0[1]);
 			}
 			copy_pipe_fd(pipe0, pipe1);
-			waitpid(fd, &child_stat[i], WNOHANG); // 각 자식 프로세스마다 wait
-			++i;
+			if (g_info.cmds[i + 1] == NULL)
+				waitpid(fd, &child_stat[i], 0); // 마지막 프로세스는 대기
+			else
+				waitpid(fd, &child_stat[i], WNOHANG); // 각 자식 프로세스마다 wait
 		}
 		else
 		{
@@ -265,6 +286,7 @@ int		check_input_redirection(int i, int pip[])
 	node_of_redir_list = node->data;
 	while (node_of_redir_list != NULL)
 	{
+		// ft_putstr_fd("in\n", 2);
 		if (node_of_redir_list->data == NULL)
 			return (REDIR_INFO_NODE_NULL);
 		if (((t_redir_lst_nod*)(node_of_redir_list->data))->type == IN_REDIR_LIM) // "<<"의 리디렉션
@@ -307,6 +329,7 @@ int		check_input_redirection(int i, int pip[])
 		}
 		node_of_redir_list = node_of_redir_list->next;
 	}
+	return (0);
 }
 
 // void	count_input_redirections(int i, int *input_cnt, t_list *node)
@@ -335,6 +358,7 @@ int		check_output_redirection(int i, int pip[])
 	node_of_redir_list = node->data;
 	while (node_of_redir_list != NULL)
 	{
+		// ft_putstr_fd("in\n", 2);
 		if (node_of_redir_list->data == NULL)
 			return (REDIR_INFO_NODE_NULL);
 		if (((t_redir_lst_nod*)(node_of_redir_list->data))->type == OUT_REDIR_APP
@@ -355,6 +379,7 @@ int		check_output_redirection(int i, int pip[])
 		}
 		node_of_redir_list = node_of_redir_list->next;
 	}
+	return (0);
 }
 
 //////////////////////////////
@@ -370,10 +395,16 @@ void	try_builtin_or_execve(int i)
 	int		error_check;
 	char	**envp;
 
+	// ft_putstr_fd(g_info.cmds[i][0], 2);//////////////////////////////
+	// printf("is builtin = %d\n", is_builtin(g_info.cmds[i][0]));/////////////////
 	if (is_builtin(g_info.cmds[i][0]))
+	{
+		// printf("try builtin에서 빌트인\n");
 		exit(run_only_one_cmd_builtin(i));
+	}
 	else
 	{
+		// ft_putstr_fd("herer\n", 2);//////////
 		envp = get_env_list();
 		if (envp == NULL)
 		{
@@ -396,6 +427,12 @@ void	try_builtin_or_execve(int i)
 	exit(1);
 }
 
+
+////////////////////////test
+void	print_double_array(char **arr);
+
+///////////
+
 int		try_builtin_or_execve_sub(int i, char **envp)
 {
 	int		path_idx;
@@ -406,6 +443,7 @@ int		try_builtin_or_execve_sub(int i, char **envp)
 	if (path_idx < 0)
 		return (CMD_NOT_FOUND);
 	path_string_idx = 5;
+	// print_double_array(g_info.cmds[i]);
 	while (envp[path_idx][path_string_idx] != '\0')
 	{
 		tmp = try_builtin_or_execve_sub2(&path_string_idx, path_idx, i, envp);
@@ -414,8 +452,16 @@ int		try_builtin_or_execve_sub(int i, char **envp)
 			return (MALLOC_ERROR);
 		}
 		execve(tmp, g_info.cmds[i], envp);
+		// perror("execve");/////////////
+		// write(1, " ", 1);//////////////
+		// write(1, tmp, ft_strlen(tmp));////////////
+		// write(1, "\n ", 2);/////////////////////
+		// write(1, g_info.cmds[i][0], ft_strlen(g_info.cmds[i][0]));/////////////
+		// write(1, "\n\n", 2);/////////////////////////////////////////////
 		free(tmp);
 	}
+	//디버그
+	write(1, "execve_sub_not_found\n", ft_strlen("execve_sub_not_found\n"));
 	return (CMD_NOT_FOUND);
 }
 

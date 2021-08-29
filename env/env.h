@@ -34,6 +34,10 @@ int	set_new_key(char *key_and_value);
 
 char	**get_env_list(void);
 
-char	*unite_key_value(int i, t_list *idx);
+int		count_env_num(void);
+
+char	*unite_key_value(t_list *idx);
 
 void	free_envp_list(char **envp);
+
+char	*find_key_and_return_value(char *key);

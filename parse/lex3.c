@@ -62,7 +62,6 @@ int	find_env_var_and_mov_ptr(char **line)
 
 int	only_find_env_var(char *start, int len)
 {
-	int		i;
 	char	*key_buf;
 	char	*value;
 	int		error_check;
