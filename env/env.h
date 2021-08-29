@@ -36,7 +36,7 @@ char	**get_env_list(void);
 
 int		count_env_num(void);
 
-char	*unite_key_value(int i, t_list *idx);
+char	*unite_key_value(t_list *idx);
 
 void	free_envp_list(char **envp);
 

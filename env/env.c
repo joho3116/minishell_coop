@@ -4,14 +4,8 @@
 int	init_minishell_envp(char *envp[])
 {
 	int			i;
-	char		*key_tmp;
-	char		*value_tmp;
-	t_env_node	*data;
-	t_list		*node;
 
 	i = -1;
-	key_tmp = NULL;
-	value_tmp = NULL;
 	while (envp[++i] != NULL)
 	{
 		if (set_new_key(envp[i]) < 0)
@@ -165,6 +159,7 @@ int	set_new_key(char *key_and_value)
 		return (-1);
 	}
 	ft_lstadd_back(&(g_info.env), node);
+	return (0);
 }
 
 // 호출하는 커맨드가 다양하므로 에러 문구를 해당 커맨드에서 출력하게 한다.
@@ -184,7 +179,7 @@ char	**get_env_list(void)
 	idx = g_info.env;
 	while (idx)
 	{
-		ret[i] = unite_key_value(i, idx);
+		ret[i] = unite_key_value(idx);
 		if (ret[i] == NULL)
 		{
 			free_envp_list(ret);
@@ -211,7 +206,7 @@ int		count_env_num()
 	return (i);
 }
 
-char	*unite_key_value(int i, t_list *idx)
+char	*unite_key_value(t_list *idx)
 {
 	int		len;
 	char	*ret;
