@@ -167,6 +167,63 @@ int	set_new_key(char *key_and_value)
 	ft_lstadd_back(&(g_info.env), node);
 }
 
+// 호출하는 커맨드가 다양하므로 에러 문구를 해당 커맨드에서 출력하게 한다.
+// 따라서 호출하는 함수에서 에러 출력하는 것 잊지 않기
+char	**get_env_list(void)
+{
+	int		num_env;
+	char	**ret;
+	int		i;
+	t_list	*idx;
+
+	num_env = count_env_num();
+	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
+	if (ret == NULL)
+		return (NULL);
+	i = 0;
+	idx = g_info.env;
+	while (idx)
+	{
+		ret[i] = unite_key_value(i, idx);
+		if (ret[i] == NULL)
+		{
+			free_envp_list(ret);
+			return (NULL);
+		}
+		++i;
+		idx = idx->next;
+	}
+	return (ret);
+}
+
+char	*unite_key_value(int i, t_list *idx)
+{
+	int		len;
+	char	*ret;
+	int		i_all;
+	int		i_indiv;
+
+	len = ft_strlen(((t_env_node *)(idx->data))->key)
+		+ ft_strlen(((t_env_node *)(idx->data))->value) + 1;
+	ret = (char *)malloc(sizeof(char) * (len + 1));
+	if (ret == NULL)
+		return (NULL);
+	i_all = 0;
+	i_indiv = 0;
+	while ((((t_env_node *)(idx->data))->key)[i_indiv] != '\0')
+		ret[i_all++] = (((t_env_node *)(idx->data))->key)[i_indiv++];
+	ret[i_all++] = '=';
+	i_indiv = 0;
+	while ((((t_env_node *)(idx->data))->value)[i_indiv] != '\0')
+		ret[i_all++] = (((t_env_node *)(idx->data))->value)[i_indiv++];
+	ret[i_all] = '\0';
+	return (ret);
+}
+
+void	free_envp_list(char **envp)
+{
+
+}
 
 // 각 주석 블럭마다 맨 앞에 테스트 설명 적어놓았습니다.
 // 모두 valgrind로 메모리 누수 체크 완료
