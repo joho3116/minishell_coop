@@ -28,21 +28,21 @@ void	sig_handler(int signum)
 	}
 }
 
-int		main()
-{
-	printf("pid = %d\n", getpid());
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, sig_handler);
-	signal(SIGTERM, sig_handler);
-	while (1)
-	{
-		char *line = readline("$> ");
-		if (line)
-			printf("|%s|\n", line);
-		// printf("what?\n");/
-		// pause();
-	}
-}
+// int		main()
+// {
+// 	printf("pid = %d\n", getpid());
+// 	signal(SIGINT, sig_handler);
+// 	signal(SIGQUIT, sig_handler);
+// 	signal(SIGTERM, sig_handler);
+// 	while (1)
+// 	{
+// 		char *line = readline("$> ");
+// 		if (line)
+// 			printf("|%s|\n", line);
+// 		// printf("what?\n");/
+// 		// pause();
+// 	}
+// }
 
 
 // - SIGINT (Ctrl - C)

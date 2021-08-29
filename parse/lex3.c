@@ -46,7 +46,6 @@ int	expand_exit_status_and_append_string(void)
 int	ft_is_in_expansion(char ch)
 {
 	return (ft_isalpha(ch) || ft_isdigit(ch));
-	// return (!(ft_isspace(ch) || ch == '|' || ch == '>' || ch == '<' || ch == ';' || ch == '/'));
 }
 
 int	find_env_var_and_mov_ptr(char **line)

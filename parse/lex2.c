@@ -53,13 +53,11 @@ int	at_double_quote(char **line)
 		else
 			error_check = make_string_and_link_node(NORMAL, **line);
 		if (error_check < 0)
-			break ;// 여기서 호출한 함수들은 에러 나면 자체적으로 다 에러 출력함
+			break ;
 	}
 	return (error_check);
 }
 
-// 리디렉션 토큰인 경우 마지막에 -1 char를 달아줘서 구분
-// (single quote로 리디렉션 토큰 같이 들어오면 구분이 안 되기 때문에)
 int	at_redirection_char(char **line)
 {
 	int	error_check;

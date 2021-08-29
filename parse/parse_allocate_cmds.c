@@ -32,7 +32,7 @@ int	allocate_cmds_sub(t_count_info_in_parse *parsecnt, t_list **idx
 		(g_info.cmds)[(*i)++][(*cmd_i)] = NULL;
 		(*cmd_i) = 0;
 	}
-	else if (token_check == NOT_REDIR) // 일반 토큰
+	else if (token_check == NOT_REDIR)
 	{
 		(g_info.cmds)[(*i)][(*cmd_i)] = ft_strdup((char *)((*idx)->data));
 		if ((g_info.cmds)[*i][(*cmd_i)++] == NULL)
@@ -41,12 +41,11 @@ int	allocate_cmds_sub(t_count_info_in_parse *parsecnt, t_list **idx
 			return (MALLOC_ERROR);
 		}
 	}
-	else // 리디렉션 토큰(토큰 두 개를 차지하므로 강제로 인덱스 하나 더 넘어가야 됨)
+	else
 		(*idx) = (*idx)->next;
 	return (0);
 }
 
-// char **까지만 해제 char *는 lex해제할 때 해제됨
 void	free_cmds(void)
 {
 	int	i;

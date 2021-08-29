@@ -1,12 +1,11 @@
 #include "../includes/minishell.h"
 
-// count_parse에서 카운트한 커맨드별 토큰 갯수를 바탕으로
-// 토큰 스트링을 할당할 '스트링의 배열 공간'과 '배열에 대한 배열 공간'을 할당한다.
 int	only_alloc_space_for_cmds(t_count_info_in_parse *parsecnt)
 {
 	int	error_check;
 
-	g_info.cmds = (char ***)malloc(sizeof(char **) * (parsecnt->num_of_cmds + 1));
+	g_info.cmds = (char ***)malloc(sizeof(char **)
+			* (parsecnt->num_of_cmds + 1));
 	if (g_info.cmds == NULL)
 	{
 		ft_perror("parse");
@@ -30,7 +29,7 @@ int	only_alloc_space_for_cmds_sub(t_count_info_in_parse *parsecnt)
 				* (*(int *)(num_tokens_idx->data) + 1));
 		if (g_info.cmds[i] == NULL)
 			return (MALLOC_ERROR);
-		only_alloc_space_for_cmds_sub2(i, *(int *)(num_tokens_idx->data) + 1); // 첫 인덱스를 NULL로 초기화해줘야 나중에 문제 생겨서 free해줄 때도 쓰레기 값을 free하는 문제 방지할 수 있음
+		only_alloc_space_for_cmds_sub2(i, *(int *)(num_tokens_idx->data) + 1);
 		num_tokens_idx = num_tokens_idx->next;
 	}
 	g_info.cmds[i] = NULL;
