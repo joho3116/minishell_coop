@@ -32,4 +32,16 @@ void	find_key_and_unset(char *key);
 // 동적할당 실패시 음수 리턴
 int	set_new_key(char *key_and_value);
 
+
+// 연결리스트 형태의 전역변수를 char **의 리스트로 동적할당해서 반환해준다.
+char	**get_env_list(void);
+
+int		count_env_num(void);
+
+char	*unite_key_value(t_list *idx);
+
+// get_env_list로 받은 이중 배열을 메모리 해제
+void	free_envp_list(char **envp);
+
+// 키 스트링을 주면 밸류 스트링을 반환(밸류 스트링은 전역변수에 있는 리스트의 원본이므로 수정하지 않게 주의)
 char	*find_key_and_return_value(char *key);
