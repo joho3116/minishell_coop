@@ -13,6 +13,7 @@
 # include <stdbool.h>
 # include <signal.h>
 # include <stdio.h>
+# include <string.h>
 
 # include "../parse/parse.h"
 # include "../utils/utils.h"
@@ -63,6 +64,13 @@ typedef	struct s_info
 	// fun_clear_redirec_lst_all();로 free
 	int				num_of_cmds;
 }				t_info;
+
+int	main(int argc, char *argv[], char *envp[]);
+int	init_minishell_envp(char *envp[]);
+int	tokenize(char *line);
+int	parse_all(void);
+
+
 
 extern t_info g_info;
 

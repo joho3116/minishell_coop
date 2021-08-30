@@ -6,8 +6,6 @@ int	init_minishell_envp(char *envp[])
 	int			i;
 	char		*key_tmp;
 	char		*value_tmp;
-	t_env_node	*data;
-	t_list		*node;
 
 	i = -1;
 	key_tmp = NULL;
@@ -19,9 +17,6 @@ int	init_minishell_envp(char *envp[])
 	}
 	return (0);
 }
-
-
-
 
 void	malloc_and_strcpy_key_value(char *env, char **key, char **value)
 {
@@ -43,9 +38,6 @@ void	malloc_and_strcpy_key_value(char *env, char **key, char **value)
 	return ;
 }
 
-
-
-
 t_env_node	*make_env_node(char **key, char **value)
 {
 	t_env_node	*ret;
@@ -64,7 +56,6 @@ t_env_node	*make_env_node(char **key, char **value)
 	return (ret);
 }
 
-
 int	ft_key_len(char *str)
 {
 	int	i;
@@ -78,13 +69,6 @@ int	ft_key_len(char *str)
 		return (-1);
 	return (i);
 }
-
-
-
-
-
-
-
 
 int	set_new_value_to_existing_key(char *key, char *new_value)
 {
@@ -103,8 +87,6 @@ int	set_new_value_to_existing_key(char *key, char *new_value)
 	((t_env_node*)(idx->data))->value = new_value;
 	return (0);
 }
-
-
 
 void	find_key_and_unset(char *key)
 {
@@ -131,10 +113,6 @@ void	find_key_and_unset(char *key)
 	free(idx->data);
 	free(idx);
 }
-
-
-
-
 
 int	set_new_key(char *key_and_value)
 {
@@ -165,10 +143,8 @@ int	set_new_key(char *key_and_value)
 		return (-1);
 	}
 	ft_lstadd_back(&(g_info.env), node);
+	return (0);
 }
-
-
-
 
 char	*find_key_and_return_value(char *key)
 {

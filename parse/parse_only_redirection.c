@@ -12,7 +12,7 @@ int	parse_only_redirection(t_count_info_in_parse *parsecnt, t_list *idx)
 		token_check = ft_which_redirection_token((char *)idx->data);
 		if (token_check == PIPE)
 		{
-			if (lst_add_redirec_lst(parsecnt, head) == MALLOC_ERROR)
+			if (lst_add_redirec_lst(head) == MALLOC_ERROR)
 				return (MALLOC_ERROR);
 			head = NULL;
 		}
@@ -24,7 +24,7 @@ int	parse_only_redirection(t_count_info_in_parse *parsecnt, t_list *idx)
 		}
 		idx = idx->next;
 	}
-	if (lst_add_redirec_lst(parsecnt, head) == MALLOC_ERROR)
+	if (lst_add_redirec_lst(head) == MALLOC_ERROR)
 		return (MALLOC_ERROR);
 	return (0);
 }
@@ -69,11 +69,10 @@ int	append_on_redirec_lst_node_sub(t_count_info_in_parse *parsecnt
 		free(data);
 		return (MALLOC_ERROR);
 	}
-	return (append_on_redirec_lst_node_sub2(parsecnt, head_of_node, idx, data));
+	return (append_on_redirec_lst_node_sub2(head_of_node, idx, data));
 }
 
-int	append_on_redirec_lst_node_sub2(t_count_info_in_parse *parsecnt
-	, t_list **head_of_node, t_list **idx, t_redir_lst_nod *data)
+int	append_on_redirec_lst_node_sub2(t_list **head_of_node, t_list **idx, t_redir_lst_nod *data)
 {
 	t_list	*nod;
 

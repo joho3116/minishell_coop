@@ -3,8 +3,6 @@
 int	count_parse(t_count_info_in_parse *parsecnt, t_list *idx)
 {
 	int		token_check;
-	int		*inttmp;
-	void	*nodtmp;
 	int		token_cnt;
 
 	token_cnt = 0;

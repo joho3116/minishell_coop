@@ -58,10 +58,10 @@ int		*malloc_int_and_set_num(int num);
 int		parse_only_redirection(t_count_info_in_parse *parsecnt, t_list *idx);
 int		append_on_redirec_lst_node(t_count_info_in_parse *parsecnt, t_list **head_of_node, t_list **idx);
 int		append_on_redirec_lst_node_sub(t_count_info_in_parse *parsecnt, t_list **head_of_node, t_list **idx);
-int		append_on_redirec_lst_node_sub2(t_count_info_in_parse *parsecnt, t_list **head_of_node, t_list **idx, t_redir_lst_nod *data);
+int		append_on_redirec_lst_node_sub2(t_list **head_of_node, t_list **idx, t_redir_lst_nod *data);
 
 
-int		lst_add_redirec_lst(t_count_info_in_parse *parsecnt, t_list *data);
+int		lst_add_redirec_lst(t_list *data);
 void	fun_clear_redirec_lst_all(void);
 void	fun_clear_redirec_lst(void *head);
 void	fun_clear_redirec_lst_data(void *data);

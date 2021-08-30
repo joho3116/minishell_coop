@@ -14,6 +14,7 @@ int	only_alloc_space_for_cmds(t_count_info_in_parse *parsecnt)
 	error_check = only_alloc_space_for_cmds_sub(parsecnt);
 	if (error_check == MALLOC_ERROR)
 		return (error_check);
+	return (0);
 }
 
 int	only_alloc_space_for_cmds_sub(t_count_info_in_parse *parsecnt)

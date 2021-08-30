@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-int	lst_add_redirec_lst(t_count_info_in_parse *parsecnt, t_list *data)
+int	lst_add_redirec_lst(t_list *data)
 {
 	t_list	*nodtmp;
 

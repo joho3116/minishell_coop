@@ -12,7 +12,7 @@ int	allocate_cmds(t_count_info_in_parse *parsecnt)
 	cmd_i = 0;
 	while (i < parsecnt->num_of_cmds && idx)
 	{
-		error_check = allocate_cmds_sub(parsecnt, &idx, &i, &cmd_i);
+		error_check = allocate_cmds_sub(&idx, &i, &cmd_i);
 		if (error_check < 0)
 			return (error_check);
 		idx = idx->next;
@@ -21,8 +21,7 @@ int	allocate_cmds(t_count_info_in_parse *parsecnt)
 	return (0);
 }
 
-int	allocate_cmds_sub(t_count_info_in_parse *parsecnt, t_list **idx
-	, int *i, int *cmd_i)
+int	allocate_cmds_sub(t_list **idx, int *i, int *cmd_i)
 {
 	int	token_check;
 
@@ -40,7 +39,7 @@ int	allocate_cmds_sub(t_count_info_in_parse *parsecnt, t_list **idx
 			ft_perror("parse");
 			return (MALLOC_ERROR);
 		}
-	}
+	} 
 	else
 		(*idx) = (*idx)->next;
 	return (0);
