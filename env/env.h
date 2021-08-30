@@ -31,3 +31,13 @@ void	find_key_and_unset(char *key);
 // 환경변수 리스트에 addback해준다.
 // 동적할당 실패시 음수 리턴
 int	set_new_key(char *key_and_value);
+
+char	**get_env_list(void);
+
+int		count_env_num(void);
+
+char	*unite_key_value(t_list *idx);
+
+void	free_envp_list(char **envp);
+
+char	*find_key_and_return_value(char *key);

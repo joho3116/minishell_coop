@@ -4,14 +4,8 @@
 int	init_minishell_envp(char *envp[])
 {
 	int			i;
-	char		*key_tmp;
-	char		*value_tmp;
-	t_env_node	*data;
-	t_list		*node;
 
 	i = -1;
-	key_tmp = NULL;
-	value_tmp = NULL;
 	while (envp[++i] != NULL)
 	{
 		if (set_new_key(envp[i]) < 0)
@@ -165,6 +159,105 @@ int	set_new_key(char *key_and_value)
 		return (-1);
 	}
 	ft_lstadd_back(&(g_info.env), node);
+	return (0);
+}
+
+// 호출하는 커맨드가 다양하므로 에러 문구를 해당 커맨드에서 출력하게 한다.
+// 따라서 호출하는 함수에서 에러 출력하는 것 잊지 않기
+char	**get_env_list(void)
+{
+	int		num_env;
+	char	**ret;
+	int		i;
+	t_list	*idx;
+
+	num_env = count_env_num();
+	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
+	if (ret == NULL)
+		return (NULL);
+	i = 0;
+	idx = g_info.env;
+	while (idx)
+	{
+		ret[i] = unite_key_value(idx);
+		if (ret[i] == NULL)
+		{
+			free_envp_list(ret);
+			return (NULL);
+		}
+		++i;
+		idx = idx->next;
+	}
+	ret[i] = NULL;
+	return (ret);
+}
+
+int		count_env_num()
+{
+	int		i;
+	t_list	*idx;
+
+	i = 0;
+	idx = g_info.env;
+	while (idx)
+	{
+		++i;
+		idx = idx->next;
+	}
+	return (i);
+}
+
+char	*unite_key_value(t_list *idx)
+{
+	int		len;
+	char	*ret;
+	int		i_all;
+	int		i_indiv;
+
+	len = ft_strlen(((t_env_node *)(idx->data))->key)
+		+ ft_strlen(((t_env_node *)(idx->data))->value) + 1;
+	ret = (char *)malloc(sizeof(char) * (len + 1));
+	if (ret == NULL)
+		return (NULL);
+	i_all = 0;
+	i_indiv = 0;
+	while ((((t_env_node *)(idx->data))->key)[i_indiv] != '\0')
+		ret[i_all++] = (((t_env_node *)(idx->data))->key)[i_indiv++];
+	ret[i_all++] = '=';
+	i_indiv = 0;
+	while ((((t_env_node *)(idx->data))->value)[i_indiv] != '\0')
+		ret[i_all++] = (((t_env_node *)(idx->data))->value)[i_indiv++];
+	ret[i_all] = '\0';
+	return (ret);
+}
+
+void	free_envp_list(char **envp)
+{
+	int	i;
+
+	i = -1;
+	while (envp[+i] != NULL)
+	{
+		free(envp[i]);
+	}
+	free(envp);
+}
+
+char	*find_key_and_return_value(char *key)
+{
+	t_list *idx;
+
+	idx = g_info.env;
+	while (idx)
+	{
+		if (ft_strcmp(key, ((t_env_node*)(idx->data))->key) == 0)
+			break ;
+		idx = idx->next;
+	}
+	if (idx == NULL)
+		return (NULL);
+	else
+		return (((t_env_node*)(idx->data))->value);
 }
 
 
