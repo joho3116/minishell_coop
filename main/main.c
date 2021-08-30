@@ -38,6 +38,7 @@ int	main(int argc, char *argv[], char *envp[])
 	++argv;
 
 	char	*line;
+	t_info	info;
 	int		error_check;
 
 	dup2(0, STDIN_BACKUP_FD);

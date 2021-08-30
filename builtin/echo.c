@@ -14,13 +14,9 @@ int	builtin_echo(int i)
 	}
 	while (g_info.cmds[i][++idx] != NULL)
 	{
-		// ft_putstr_fd(g_info.cmds[i][idx], STDOUT_BACKUP_FD);
 		ft_putstr_fd(g_info.cmds[i][idx], 1);
-		if (g_info.cmds[i][idx + 1] != NULL){
+		if (g_info.cmds[i][idx + 1] != NULL)
 			ft_putstr_fd(" ", 1);
-			// ft_putstr_fd(" ", STDOUT_BACKUP_FD);
-
-		}
 	}
 	if (flag_new_line == true)
 		ft_putstr_fd("\n", 1);

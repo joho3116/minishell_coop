@@ -1,5 +1,13 @@
 #include "../includes/minishell.h"
 
+// key의 value를 new_value로 교체
+// new_value는 동적할당된 것이어야 함
+// key를 찾지 못할 경우 음수값 리턴
+// new_value == NULL이면 unset해버리기?
+int	set_new_value_to_key(char *key, char *new_value)
+{
+
+}
 
 int	change_dir_to_arg(char *dir)
 {
