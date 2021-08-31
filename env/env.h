@@ -34,7 +34,7 @@ int	set_new_key(char *key_and_value);
 
 // 연결리스트 형태의 전역변수를 char **의 리스트로 동적할당해서 반환해준다.
 // with_quotation버전은 export에서 key="value"형태로 출력하기에 이를 위한 함수
-// 사용하고 free_envp_list()로 해제하는 것 잊지 않기!
+// 사용하고 free_env_list()로 해제해줘야 함
 char	**get_env_list(void);
 char	**get_env_list_with_quotation(void);
 
@@ -42,7 +42,6 @@ int		count_env_num(void);
 
 char	*unite_key_value(t_list *idx);
 char	*unite_key_value_with_quotation(t_list *idx);
-
 
 // get_env_list로 받은 이중 배열을 메모리 해제
 void	free_envp_list(char **envp);

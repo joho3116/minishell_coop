@@ -191,6 +191,33 @@ char	**get_env_list(void)
 	ret[i] = NULL;
 	return (ret);
 }
+char	**get_env_list_with_quotation(void)
+{
+	int		num_env;
+	char	**ret;
+	int		i;
+	t_list	*idx;
+
+	num_env = count_env_num();
+	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
+	if (ret == NULL)
+		return (NULL);
+	i = 0;
+	idx = g_info.env;
+	while (idx)
+	{
+		ret[i] = unite_key_value_with_quotation(idx);
+		if (ret[i] == NULL)
+		{
+			free_envp_list(ret);
+			return (NULL);
+		}
+		++i;
+		idx = idx->next;
+	}
+	ret[i] = NULL;
+	return (ret);
+}
 
 char	**get_env_list_with_quotation(void)
 {
