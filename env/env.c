@@ -242,20 +242,3 @@ char	*find_key_and_return_value(char *key)
 	else
 		return (((t_env_node*)(idx->data))->value);
 }
-
-char	*find_key_and_return_value(char *key)
-{
-	t_list *idx;
-
-	idx = g_info.env;
-	while (idx)
-	{
-		if (ft_strcmp(key, ((t_env_node*)(idx->data))->key) == 0)
-			break ;
-		idx = idx->next;
-	}
-	if (idx == NULL)
-		return (NULL);
-	else
-		return (((t_env_node*)(idx->data))->value);
-}
