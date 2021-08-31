@@ -11,21 +11,22 @@ void	sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		printf("\b\btest : SIGINT\n");
-		print_prompt();
-		usleep(600);
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
 	// \b을 통해 입력되는 시그널 지우고, test 문구 출력, 프롬프트 출력, 이제 동작 구현
 	if (signum == SIGQUIT)
-	{
-		printf("\b\btest : SIGQUIT\n");
-		usleep(600);
-	}
-	if (signum == SIGTERM)
-	{
-		printf("test: SIGTERM\n");
-		usleep(600);
-	}
+		write(1, "\b\b  \b\b", 6);
+}
+
+void	sig_handler_on_main_at_run_cmd(int signum)
+{
+	if (signum == SIGINT)
+		write(1, "\n", 1);
+	if (signum == SIGQUIT)
+		;
 }
 
 // int		main()

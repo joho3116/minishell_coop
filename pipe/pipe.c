@@ -168,6 +168,8 @@ int	run_pipe(void)
 		return (1);
 	}
 
+	signal(SIGINT, sig_handler_on_main_at_run_cmd);
+	signal(SIGQUIT, sig_handler_on_main_at_run_cmd);
 
 	// int	last = 9; // 커맨드 갯수
 	int i = -1;
@@ -187,7 +189,8 @@ int	run_pipe(void)
 		if (fd == 0)
 		{ // child
 		// 공통
-
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			// 기본 input셋팅
 			///////////////////////
 			if (i != 0){
@@ -254,6 +257,8 @@ int	run_pipe(void)
 	}
 	stat = WEXITSTATUS(child_stat[--i]);
 	free(child_stat);
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
 	return(stat); // 맨 마지막 커맨드의 종료 상태 반환
 }
 /////////////////////////////////////////
