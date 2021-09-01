@@ -1,56 +1,64 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: johokyoun <johokyoun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 23:11:02 by johokyoun         #+#    #+#             */
-/*   Updated: 2021/08/31 22:17:01 by johokyoun        ###   ########.fr       */
+/*   Updated: 2021/09/01 17:24:29 by johokyoun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char    **ascending_env_key(t_list *idx, t_env_node *env_data)
+char    **ascending_env_key(t_list *idx, char **ret)
 { 
-    t_list *tmp_idx;
-    t_env_node *tmp_env;
     int idx_size;
     int i;
     int step;
+    char    **tmps_str;
+    char    *tmp_str;
 
-    i = 0;
-    step = 0;
-    tmp_idx = idx;
+    i = -1;
+    tmps_str = ret;
     idx_size = ft_lstsize(idx);
-    while (i++ < idx_size - 1)
-    {
-        while (step++ < idx_size - 1)
-        tmp_env = tmp_idx->data;
-        if (ft_strcmp())
+    while (++i < idx_size - 1)
+    {   
+        step = -1;
+        while (++step < idx_size - 1 - i)
+        {
+            if (ft_strcmp(tmps_str[step], tmps_str[step + 1]) > 0)
+            {
+                tmp_str = tmps_str[step];
+                tmps_str[step] = tmps_str[step + 1];
+                tmps_str[step + 1] = tmp_str;
+            }
+        }
     }
-
+    return (tmps_str);
 }
 
 int put_env_list()
 {
     t_list *idx;
     t_env_node *env_data;
-    
+    char    **ret; 
+    char    **tmps_str;  
+    int i;
+
+    i = 0;
     idx = g_info.env;
     env_data = idx->data;
-    ascending_env_key(idx, env_data);
-    while (idx)
+    ret = get_env_list_with_quotation();
+    tmps_str = ascending_env_key(idx, ret);
+    while (*tmps_str)
     {
-        // env_data = idx->data;
-        // ft_putstr_fd("declare -x ", 1);
-        // ft_putstr_fd(env_data->key, 1);
-        // ft_putstr_fd("=\"", 1);
-        // ft_putstr_fd(env_data->value, 1);
-        // ft_putstr_fd("\"\n", 1);
-        // idx = idx->next;
+        ft_putstr_fd("declare -x ", 1);
+        ft_putstr_fd(*tmps_str++, 1);
+        ft_putchar_fd('\n', 1);
     }
+    free_envp_list(ret);
     return(0);
 }
 
@@ -67,40 +75,40 @@ int builtin_export(int i)
     return (0);
 }
 
-t_info g_info;
+// t_info g_info;
 
-int	main(int argc, char *argv[], char *envp[])
-{
-	char	*line;
-	int		error_check;
+// int	main(int argc, char *argv[], char *envp[])
+// {
+// 	char	*line;
+// 	int		error_check;
 
-    error_check = init_minishell_envp(envp);
-	while (1)
-	{
-		line = readline("$> ");
-		error_check = tokenize(line);
-		if (error_check < 0)
-		{
-			print_error(error_check, "");
-			ft_lstclear(&g_info.lex_head, &free);
-			free(line);
-			continue ;
-		}
-		error_check = parse_all();
-		if (error_check < 0)
-		{
-			/*
-			** void free_parse_malloc_in_global_var(void)
-			*/
-			// 전역변수 내 free할 것들 free
-			free_parse_malloc_in_global_var();
-			print_error(error_check, "");
-			free(line);
-			continue ;
-		}
-		int ret = builtin_export(0);
-		printf(" ret = %d\n", ret);
-		free_parse_malloc_in_global_var();
-		free(line);
-	}
-}
+//     error_check = init_minishell_envp(envp);
+// 	while (1)
+// 	{
+// 		line = readline("$> ");
+// 		error_check = tokenize(line);
+// 		if (error_check < 0)
+// 		{
+// 			print_error(error_check, "");
+// 			ft_lstclear(&g_info.lex_head, &free);
+// 			free(line);
+// 			continue ;
+// 		}
+// 		error_check = parse_all();
+// 		if (error_check < 0)
+// 		{
+// 			/*
+// 			** void free_parse_malloc_in_global_var(void)
+// 			*/
+// 			// 전역변수 내 free할 것들 free
+// 			free_parse_malloc_in_global_var();
+// 			print_error(error_check, "");
+// 			free(line);
+// 			continue ;
+// 		}
+// 		int ret = builtin_export(0);
+// 		printf(" ret = %d\n", ret);
+// 		free_parse_malloc_in_global_var();
+// 		free(line);
+// 	}
+// }
