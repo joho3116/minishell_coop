@@ -284,6 +284,7 @@ int		check_input_redirection(int i, int pip[])
 	int		ret;
 	int		read_size;
 	char	buf[BUF_SIZE];
+	char *line;
 
 	node = find_node_at_idx_in_list(g_info.cmd_redir_lst, i);
 	if (node == NULL)
@@ -301,23 +302,30 @@ int		check_input_redirection(int i, int pip[])
 			if (pip[0] != 0)
 				close(0); // dup2했던 것도 닫아줘야 완전히 닫힘
 			pipe(pip);
-			dup2(pip[0], 0);
-
-			write(STDOUT_BACKUP_FD, "> ", 2);
-			read_size = read(STDIN_BACKUP_FD, buf, BUF_SIZE);
-			while (read_size > 0)
+			if (pip[0] == 0)
 			{
-				if (ft_strncmp(((t_redir_lst_nod*)(node_of_redir_list))->path, buf, read_size) == 0)
-					break ;
-				write(pip[1], buf, read_size);
-				write(STDOUT_BACKUP_FD, "> ", 2);
-				read_size = read(STDIN_BACKUP_FD, buf, BUF_SIZE);
+				pip[0] = dup(pip[0]);
+				close(0);
 			}
-			if (read_size < 0)
+			dup2(STDIN_BACKUP_FD, 0);
+
+			while (1)
 			{
-				return (READ_ERROR);
+				line = readline("> ");
+				if (!line)
+					break ;
+				if (ft_strcmp(((t_redir_lst_nod *)(node_of_redir_list->data))->path, line) == 0)
+				{
+					free(line);
+					break ;
+				}
+
+				write(pip[1], line, ft_strlen(line));
+				write(pip[1], "\n", 1);
+				free(line);
 			}
 			close(pip[1]);
+			dup2(pip[0], 0);
 		}
 		else if (((t_redir_lst_nod*)(node_of_redir_list->data))->type == IN_REDIR)
 		{
