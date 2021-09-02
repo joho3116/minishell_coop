@@ -142,7 +142,7 @@ typedef	struct s_info
 }				t_info;
 
 extern t_info g_info;
-
+extern const char * const sys_siglist[];
 bool	is_only_white_spaces(char *line);
 
 
