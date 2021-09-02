@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: johokyoun <johokyoun@student.42.fr>        +#+  +:+       +#+        */
+/*   By: chanlee <chanlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 22:16:08 by johokyoun         #+#    #+#             */
-/*   Updated: 2021/09/01 17:21:49 by johokyoun        ###   ########.fr       */
+/*   Updated: 2021/09/02 15:33:01 by chanlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@ int builtin_env(int i)
 {
     t_list *idx;
     t_env_node *env_data;
-    
+
     if (g_info.cmds[i][1] != NULL)
+	{
+		print_error(ENV_ARG_ERROR, "env");
         return (-1);
+	}
     idx = g_info.env;
     while (idx)
     {
