@@ -466,7 +466,7 @@ int		try_builtin_or_execve_sub(int i, char **envp)
 		free(tmp);
 	}
 	//디버그
-	write(1, "execve_sub_not_found\n", ft_strlen("execve_sub_not_found\n"));
+	// write(1, "execve_sub_not_found\n", ft_strlen("execve_sub_not_found\n"));
 	return (CMD_NOT_FOUND);
 }
 
