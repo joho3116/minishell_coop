@@ -78,11 +78,12 @@ int	only_find_env_var(char *start, int len)
 		free(key_buf);
 		return (0);
 	}
-	while (*(value++))
+	while (*value)
 	{
 		error_check = make_string_and_link_node(NORMAL, *value);
 		if (error_check < 0)
 			break ;
+		++value;
 	}
 	free(key_buf);
 	return (error_check);

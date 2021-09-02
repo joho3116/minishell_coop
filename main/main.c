@@ -72,17 +72,17 @@ int	main(int argc, char *argv[], char *envp[])
 		// char	cwd;
 		// cwd = getcwd();
 		dst[0] = '\0';
-		ft_strlcat(dst, CC_BGRN, 1024);
-		ft_strlcat(dst, find_key_and_return_value("USER"), 1024);
-		ft_strlcat(dst, CC_RESET, 1024);
-		ft_strlcat(dst, ":", 1024);
-		ft_strlcat(dst, CC_BBLU, 1024);
-		ft_strlcat(dst, find_key_and_return_value("PWD"), 1024);
-		ft_strlcat(dst, CC_RESET"$ ", 1024);
+		// ft_strlcat(dst, CC_BGRN, 1024);
+		// ft_strlcat(dst, find_key_and_return_value("USER"), 1024);
+		// ft_strlcat(dst, CC_RESET, 1024);
+		// ft_strlcat(dst, ":", 1024);
+		// ft_strlcat(dst, CC_BBLU, 1024);
+		// ft_strlcat(dst, find_key_and_return_value("PWD"), 1024);
+		// ft_strlcat(dst, CC_RESET"$ ", 1024);
 		// 아직 새 줄에 아무 것도 입력되지 않은 상태에서 readline에 EOF가 들어오면 NULL반환
 
 		// line = readline(CC_HBLU"$> "CC_RESET);
-		line = readline(dst);
+		line = readline("$> ");
 
 
 		// readline에서 아무 것도 입력하지 않은 채로 ctrl + d로 eof 보내면 null반환
@@ -132,6 +132,10 @@ int	main(int argc, char *argv[], char *envp[])
 			free_parse_malloc_in_global_var();
 			free(line);
 			continue ;
+		}
+		else
+		{
+			g_info.exit_status = error_check;
 		}
 		free_parse_malloc_in_global_var();
 		free(line);

@@ -288,7 +288,7 @@ void	free_envp_list(char **envp)
 	int	i;
 
 	i = -1;
-	while (envp[+i] != NULL)
+	while (envp[++i] != NULL)
 	{
 		free(envp[i]);
 	}

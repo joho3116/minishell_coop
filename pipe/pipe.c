@@ -29,8 +29,8 @@ int	is_builtin(char *str)
 ////////////////////////////////////////////////
 // pipe.c 컴파일 되게 하기 위해 임시로 넣어놓은 함수 프로토타입부분
 //
-int		builtin_echo(int i);
-int		builtin_cd(int i);
+// int		builtin_echo(int i);
+// int		builtin_cd(int i);
 // int		builtin_pwd(int i);
 // int		builtin_export(int i);
 // int		builtin_unset(int i);
@@ -80,22 +80,22 @@ int	run_only_one_cmd_builtin(int i)
 	{
 		ret = builtin_cd(i);
 	}
-	// else if (ft_strcmp(g_info.cmds[i][0], "pwd") == 0)
-	// {
-	// 	ret = builtin_pwd(i);
-	// }
-	// else if (ft_strcmp(g_info.cmds[i][0], "export") == 0)
-	// {
-	// 	ret = builtin_export(i);
-	// }
-	// else if (ft_strcmp(g_info.cmds[i][0], "unset") == 0)
-	// {
-	// 	ret = builtin_unset(i);
-	// }
-	// else if (ft_strcmp(g_info.cmds[i][0], "env") == 0)
-	// {
-	// 	ret = builtin_env(i);
-	// }
+	else if (ft_strcmp(g_info.cmds[i][0], "pwd") == 0)
+	{
+		ret = builtin_pwd(i);
+	}
+	else if (ft_strcmp(g_info.cmds[i][0], "export") == 0)
+	{
+		ret = builtin_export(i);
+	}
+	else if (ft_strcmp(g_info.cmds[i][0], "unset") == 0)
+	{
+		ret = builtin_unset(i);
+	}
+	else if (ft_strcmp(g_info.cmds[i][0], "env") == 0)
+	{
+		ret = builtin_env(i);
+	}
 	// else if (ft_strcmp(g_info.cmds[i][0], "exit") == 0)
 	// {
 	// 	ret = builtin_exit(i);
@@ -307,7 +307,7 @@ int		check_input_redirection(int i, int pip[])
 			read_size = read(STDIN_BACKUP_FD, buf, BUF_SIZE);
 			while (read_size > 0)
 			{
-				if (ft_strncmp(((t_redir_lst_nod*)(node_of_redir_list))->path, buf, read_size) == 0)
+				if (ft_strncmp(((t_redir_lst_nod*)(node_of_redir_list))->path, buf, read_size - 1) == 0)
 					break ;
 				write(pip[1], buf, read_size);
 				write(STDOUT_BACKUP_FD, "> ", 2);

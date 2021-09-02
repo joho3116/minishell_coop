@@ -46,6 +46,8 @@ void print_error(int error_type, char *opt)
 	}
 	else
 	{
+		ft_putstr_fd(opt,2 );
+		ft_putstr_fd(": ", 2);
 		ft_putstr_fd("unknown type error\n", 2);
 	}
 }
