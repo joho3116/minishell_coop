@@ -416,15 +416,13 @@ void	try_builtin_or_execve(int i)
 			ft_perror(g_info.cmds[i][0]);
 			exit(1);
 		}
-		tmp = pipe_strjoin(".", "/", g_info.cmds[i][0]);
-		if (tmp == NULL)
+		if (g_info.cmds[i][0][0] == '/' || g_info.cmds[i][0][0] == '.')
 		{
-			free_envp_list(envp);
-			ft_perror(g_info.cmds[i][0]); // free는 main에서 해준다.리턴만 해주자.
-			exit(1);
+			execve(g_info.cmds[i][0], g_info.cmds[i], envp);
+			ft_putstr_fd("minishell: ", 2);
+			ft_perror(g_info.cmds[i][0]);
+			exit(127); // 테스트 결과
 		}
-		execve(tmp, g_info.cmds[i], envp);
-		free(tmp);
 		error_check = try_builtin_or_execve_sub(i, envp);
 	}
 	free_envp_list(envp);
