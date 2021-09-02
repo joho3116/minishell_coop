@@ -6,9 +6,10 @@
 /*   By: johokyoun <johokyoun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 22:16:08 by johokyoun         #+#    #+#             */
-/*   Updated: 2021/09/03 07:15:33 by johokyoun        ###   ########.fr       */
+/*   Updated: 2021/09/03 08:22:44 by johokyoun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 
@@ -16,9 +17,13 @@ int builtin_env(int i)
 {
     t_list *idx;
     t_env_node *env_data;
-    
+
     if (g_info.cmds[i][1] != NULL)
         return (1);
+	{
+		print_error(ENV_ARG_ERROR, "env");
+        return (-1);
+	}
     idx = g_info.env;
     while (idx)
     {
@@ -68,4 +73,5 @@ int builtin_env(int i)
 // 		free_parse_malloc_in_global_var();
 // 		free(line);
 // 	}
+// }
 // }
