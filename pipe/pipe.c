@@ -423,20 +423,19 @@ void	try_builtin_or_execve(int i)
 	else
 	{
 		// ft_putstr_fd("herer\n", 2);//////////
-		if (g_info.cmds[i][0][0] == '/')
-		{
-			execve(g_info.cmds[i][0], g_info.cmds[i], envp);
-			ft_putstr_fd("minishell: ", 2);
-			ft_perror(g_info.cmds[i][0]);
-			exit(127); // 테스트 결과
-		}
 		envp = get_env_list();
 		if (envp == NULL)
 		{
 			ft_perror(g_info.cmds[i][0]);
 			exit(1);
 		}
-		execve(g_info.cmds[i][0], g_info.cmds[i], envp);
+		if (g_info.cmds[i][0][0] == '/' || g_info.cmds[i][0][0] == '.')
+		{
+			execve(g_info.cmds[i][0], g_info.cmds[i], envp);
+			ft_putstr_fd("minishell: ", 2);
+			ft_perror(g_info.cmds[i][0]);
+			exit(127); // 테스트 결과
+		}
 		error_check = try_builtin_or_execve_sub(i, envp);
 	}
 	free_envp_list(envp);
