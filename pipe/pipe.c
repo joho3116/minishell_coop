@@ -256,6 +256,17 @@ int	run_pipe(void)
 		}
 	}
 	stat = WEXITSTATUS(child_stat[--i]);
+	if (WIFSIGNALED(child_stat[i]))
+	{
+		stat = WTERMSIG(child_stat[i]) + 128;
+		if (WTERMSIG(child_stat[i]) != 2) // SIGINT가 아니면
+		{
+			ft_putstr_fd((char *)sys_siglist[WTERMSIG(child_stat[i])], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putnbr_fd(WTERMSIG(child_stat[i]), 2);
+			ft_putstr_fd("\n", 2);
+		}
+	}
 	free(child_stat);
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
