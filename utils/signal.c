@@ -24,7 +24,7 @@ void	sig_handler(int signum)
 void	sig_handler_on_main_at_run_cmd(int signum)
 {
 	if (signum == SIGINT)
-		write(1, "\n", 1);
+		write(STDOUT_BACKUP_FD, "\n", 1);
 	if (signum == SIGQUIT)
 		;
 }
