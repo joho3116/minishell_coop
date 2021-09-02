@@ -5,7 +5,9 @@ void print_error(int error_type, char *opt)
 {
 	if (error_type == MALLOC_ERROR)
 	{
-		ft_perror(strerror(errno));
+		//디버그용
+		ft_putstr_fd("malloc ", 2);
+		ft_perror(opt);
 	}
 	else if (error_type == SYNTAX_ERROR)
 	{
@@ -31,7 +33,16 @@ void print_error(int error_type, char *opt)
 	}
 	else if (error_type == READ_ERROR)
 	{
-		ft_perror(strerror(errno));
+		//디버그용
+		ft_putstr_fd("read() ", 2);
+		ft_perror(opt);
+	}
+	else if (error_type == STD_FD_RESTORE_FAIL)
+	{
+		//디버그용
+		ft_putstr_fd("std_FD_restore_fail() ", 2);
+		ft_perror(opt);
+		exit(1);
 	}
 	else
 	{

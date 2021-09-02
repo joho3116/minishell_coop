@@ -49,13 +49,6 @@ void	free_parse_malloc_in_global_var(void);
 int		last_syntax_check(t_count_info_in_parse *parsecnt);
 
 
-int		expand_wildcard(void);
-int		is_wildcard(char *str);
-int		reallocate_args(int i, int j);
-char	*dir_to_open(char *arg);
-
-
-
 int		count_parse(t_count_info_in_parse *parsecnt, t_list *idx);
 int		ft_which_redirection_token(char *str);
 int		lst_add_num_of_tokens(t_count_info_in_parse *parsecnt, int token_cnt);
@@ -82,5 +75,6 @@ void	only_alloc_space_for_cmds_sub2(int i, int num_of_nulls);
 int		allocate_cmds(t_count_info_in_parse *parsecnt);
 int		allocate_cmds_sub(t_count_info_in_parse *parsecnt, t_list **idx, int *i, int *cmd_i);
 void	free_cmds(void);
+
 
 #endif

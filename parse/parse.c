@@ -22,7 +22,7 @@ int	last_syntax_check(t_count_info_in_parse *parsecnt)
 		idx = idx->next;
 		++i;
 	}
-	return (expand_wildcard());
+	return (0);
 }
 
 int	parse_all(void)
@@ -51,57 +51,4 @@ int	free_parsecnt_and_return(int ret, t_count_info_in_parse *parsecnt)
 {
 	ft_lstclear(&(parsecnt->num_of_tokens_in_one_cmd), &free);
 	return (ret);
-}
-
-int	expand_wildcard(void)
-{
-	int	i;
-	int	j;
-	int	error_check;
-
-	error_check = 0;
-	i = -1;
-	while (g_info.cmds[++i] != NULL)
-	{
-		j = -1;
-		while (g_info.cmds[i][++j] != NULL)
-		{
-			if (is_wildcard(g_info.cmds[i][j]))
-			{
-				error_check = reallocate_args(i, j);
-				if (error_check < 0)
-					return (error_check);
-				j = -1;
-			}
-		}
-	}
-	return (0);
-}
-
-int	is_wildcard(char *str)
-{
-	if (*str == '-')
-		return (0);
-	while (*str)
-	{
-		if (*str == '*')
-			return (1);
-		++str;
-	}
-	return (0);
-}
-
-int	reallocate_args(int i, int j)
-{
-	char	**tmp;
-	DIR*	dir_ptr;
-
-	tmp = g_info.cmds[i];
-	dir_ptr = opendir(dir_to_open(g_info.cmds[i][j]));
-	if (dir_ptr )
-}
-
-char	*dir_to_open(char *arg)
-{
-
 }
