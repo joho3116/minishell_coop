@@ -6,7 +6,7 @@
 /*   By: johokyoun <johokyoun@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 15:29:29 by johokyoun         #+#    #+#             */
-/*   Updated: 2021/09/01 17:25:42 by johokyoun        ###   ########.fr       */
+/*   Updated: 2021/09/03 08:02:19 by johokyoun        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int builtin_unset(int i)
 {
     if (g_info.cmds[i][1] == NULL)
-        return (-1);
+        return (0);
     if (g_info.cmds[i][1] && g_info.cmds[i][2] == NULL)
         find_key_and_unset(g_info.cmds[i][1]);
     return (0);

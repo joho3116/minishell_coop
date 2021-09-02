@@ -75,6 +75,6 @@ int	builtin_cd(int i)
 	else
 	{
 		ft_putstr_fd("minisehll: cd: too many arguments\n", 2);
-		return (1)
+		return (1);
 	}
 }
