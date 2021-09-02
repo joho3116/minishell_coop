@@ -325,9 +325,9 @@ int		check_input_redirection(int i, int pip[])
 				}
 				// printf("line = %s\n", line);
 				// printf("pip[1] = %d\n", pip[1]);
-				// write(pip[1], line, ft_strlen(line));
-				// write(pip[1], "\n", 1);
-				// free(line);
+				write(pip[1], line, ft_strlen(line));
+				write(pip[1], "\n", 1);
+				free(line);
 			}
 			close(pip[1]);
 			dup2(pip[0], 0);
