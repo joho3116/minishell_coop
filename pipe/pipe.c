@@ -313,7 +313,10 @@ int		check_input_redirection(int i, int pip[])
 			{
 				line = readline("> ");
 				if (!line)
+				{
+					write(1, "\n", 1);
 					break ;
+				}
 				if (ft_strcmp(((t_redir_lst_nod *)(node_of_redir_list->data))->path, line) == 0)
 				{
 					free(line);
