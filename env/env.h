@@ -52,3 +52,6 @@ void	free_envp_list(char **envp);
 
 // 키 스트링을 주면 밸류 스트링을 반환(밸류 스트링은 전역변수에 있는 리스트의 원본이므로 수정하지 않게 주의)
 char	*find_key_and_return_value(char *key);
+
+// 키 스트링을 주면 해당 노드의 포인터를 반환, 못 찾으면 널 반환
+t_env_node	*find_key_and_return_node(char *key);
