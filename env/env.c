@@ -93,7 +93,8 @@ int	set_new_value_to_existing_key(char *key, char *new_value)
 	}
 	if (idx == NULL)
 		return (-1);
-	free(((t_env_node*)(idx->data))->value);
+	if (((t_env_node*)(idx->data))->value != NULL)
+		free(((t_env_node*)(idx->data))->value);
 	((t_env_node*)(idx->data))->value = new_value;
 	return (0);
 }
