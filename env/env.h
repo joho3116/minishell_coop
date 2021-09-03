@@ -38,7 +38,11 @@ int	set_new_key(char *key_and_value);
 char	**get_env_list(void);
 char	**get_env_list_with_quotation(void);
 
-int		count_env_num(void);
+// 밸류 없는 노드도 카운트(get_env_list에 쓰임)
+int		count_env_num_all(void);
+
+// 밸류 없는 노드는 카운트 안 함(get_env_list_with_quotation에 쓰임)
+int		count_env_num_exclude_null_value(void);
 
 char	*unite_key_value(t_list *idx);
 char	*unite_key_value_with_quotation(t_list *idx);

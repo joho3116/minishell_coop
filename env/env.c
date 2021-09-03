@@ -171,7 +171,7 @@ char	**get_env_list(void)
 	int		i;
 	t_list	*idx;
 
-	num_env = count_env_num();
+	num_env = count_env_num_all();
 	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
 	if (ret == NULL)
 		return (NULL);
@@ -179,7 +179,10 @@ char	**get_env_list(void)
 	idx = g_info.env;
 	while (idx)
 	{
-		ret[i] = unite_key_value(idx);
+		if (((t_env_node *)(idx->data))->value != NULL)
+			ret[i] = unite_key_value(idx);
+		else
+			ret[i] = ft_strdup(((t_env_node *)(idx->data))->key);
 		if (ret[i] == NULL)
 		{
 			free_envp_list(ret);
@@ -198,7 +201,7 @@ char	**get_env_list_with_quotation(void)
 	int		i;
 	t_list	*idx;
 
-	num_env = count_env_num();
+	num_env = count_env_num_exclude_null_value();
 	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
 	if (ret == NULL)
 		return (NULL);
@@ -206,20 +209,77 @@ char	**get_env_list_with_quotation(void)
 	idx = g_info.env;
 	while (idx)
 	{
-		ret[i] = unite_key_value_with_quotation(idx);
-		if (ret[i] == NULL)
+		if (((t_env_node *)(idx->data))->value != NULL)
 		{
-			free_envp_list(ret);
-			return (NULL);
+			ret[i] = unite_key_value_with_quotation(idx);
+			if (ret[i] == NULL)
+			{
+				free_envp_list(ret);
+				return (NULL);
+			}
+			++i;
 		}
-		++i;
 		idx = idx->next;
 	}
 	ret[i] = NULL;
 	return (ret);
 }
+// char	**get_env_list(void)
+// {
+// 	int		num_env;
+// 	char	**ret;
+// 	int		i;
+// 	t_list	*idx;
 
-int		count_env_num()
+// 	num_env = count_env_num();
+// 	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
+// 	if (ret == NULL)
+// 		return (NULL);
+// 	i = 0;
+// 	idx = g_info.env;
+// 	while (idx)
+// 	{
+// 		ret[i] = unite_key_value(idx);
+// 		if (ret[i] == NULL)
+// 		{
+// 			free_envp_list(ret);
+// 			return (NULL);
+// 		}
+// 		++i;
+// 		idx = idx->next;
+// 	}
+// 	ret[i] = NULL;
+// 	return (ret);
+// }
+// char	**get_env_list_with_quotation(void)
+// {
+// 	int		num_env;
+// 	char	**ret;
+// 	int		i;
+// 	t_list	*idx;
+
+// 	num_env = count_env_num();
+// 	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
+// 	if (ret == NULL)
+// 		return (NULL);
+// 	i = 0;
+// 	idx = g_info.env;
+// 	while (idx)
+// 	{
+// 		ret[i] = unite_key_value_with_quotation(idx);
+// 		if (ret[i] == NULL)
+// 		{
+// 			free_envp_list(ret);
+// 			return (NULL);
+// 		}
+// 		++i;
+// 		idx = idx->next;
+// 	}
+// 	ret[i] = NULL;
+// 	return (ret);
+// }
+
+int		count_env_num_all()
 {
 	int		i;
 	t_list	*idx;
@@ -229,6 +289,21 @@ int		count_env_num()
 	while (idx)
 	{
 		++i;
+		idx = idx->next;
+	}
+	return (i);
+}
+int		count_env_num_exclude_null_value()
+{
+	int		i;
+	t_list	*idx;
+
+	i = 0;
+	idx = g_info.env;
+	while (idx)
+	{
+		if (((t_env_node *)(idx->data))->value != NULL)
+			++i;
 		idx = idx->next;
 	}
 	return (i);
