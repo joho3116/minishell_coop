@@ -121,7 +121,8 @@ void	find_key_and_unset(char *key)
 	else
 		before_idx->next = idx->next;
 	free(((t_env_node*)(idx->data))->key);
-	free(((t_env_node*)(idx->data))->value);
+	if (((t_env_node *)(idx->data))->value != NULL)
+		free(((t_env_node*)(idx->data))->value);
 	free(idx->data);
 	free(idx);
 }
