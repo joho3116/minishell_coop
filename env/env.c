@@ -82,7 +82,8 @@ int	set_new_value_to_existing_key(char *key, char *new_value)
 	}
 	if (idx == NULL)
 		return (-1);
-	free(((t_env_node*)(idx->data))->value);
+	if (((t_env_node*)(idx->data))->value != NULL)
+		free(((t_env_node*)(idx->data))->value);
 	((t_env_node*)(idx->data))->value = new_value;
 	return (0);
 }
@@ -108,7 +109,8 @@ void	find_key_and_unset(char *key)
 	else
 		before_idx->next = idx->next;
 	free(((t_env_node*)(idx->data))->key);
-	free(((t_env_node*)(idx->data))->value);
+	if (((t_env_node *)(idx->data))->value != NULL)
+		free(((t_env_node*)(idx->data))->value);
 	free(idx->data);
 	free(idx);
 }
@@ -154,7 +156,7 @@ char	**get_env_list(void)
 	int		i;
 	t_list	*idx;
 
-	num_env = count_env_num();
+	num_env = count_env_num_all();
 	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
 	if (ret == NULL)
 		return (NULL);
@@ -162,13 +164,16 @@ char	**get_env_list(void)
 	idx = g_info.env;
 	while (idx)
 	{
-		ret[i] = unite_key_value(idx);
-		if (ret[i] == NULL)
+		if (((t_env_node *)(idx->data))->value != NULL)
 		{
-			free_envp_list(ret);
-			return (NULL);
+			ret[i] = unite_key_value_with_quotation(idx);
+			if (ret[i] == NULL)
+			{
+				free_envp_list(ret);
+				return (NULL);
+			}
+			++i;
 		}
-		++i;
 		idx = idx->next;
 	}
 	ret[i] = NULL;
@@ -181,7 +186,7 @@ char	**get_env_list_with_quotation(void)
 	int		i;
 	t_list	*idx;
 
-	num_env = count_env_num();
+	num_env = count_env_num_exclude_null_value();
 	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
 	if (ret == NULL)
 		return (NULL);
@@ -189,7 +194,10 @@ char	**get_env_list_with_quotation(void)
 	idx = g_info.env;
 	while (idx)
 	{
-		ret[i] = unite_key_value_with_quotation(idx);
+		if (((t_env_node *)(idx->data))->value != NULL)
+			ret[i] = unite_key_value(idx);
+		else
+			ret[i] = ft_strdup(((t_env_node *)(idx->data))->key);
 		if (ret[i] == NULL)
 		{
 			free_envp_list(ret);
@@ -201,8 +209,62 @@ char	**get_env_list_with_quotation(void)
 	ret[i] = NULL;
 	return (ret);
 }
+// char	**get_env_list(void)
+// {
+// 	int		num_env;
+// 	char	**ret;
+// 	int		i;
+// 	t_list	*idx;
 
-int		count_env_num()
+// 	num_env = count_env_num();
+// 	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
+// 	if (ret == NULL)
+// 		return (NULL);
+// 	i = 0;
+// 	idx = g_info.env;
+// 	while (idx)
+// 	{
+// 		ret[i] = unite_key_value(idx);
+// 		if (ret[i] == NULL)
+// 		{
+// 			free_envp_list(ret);
+// 			return (NULL);
+// 		}
+// 		++i;
+// 		idx = idx->next;
+// 	}
+// 	ret[i] = NULL;
+// 	return (ret);
+// }
+// char	**get_env_list_with_quotation(void)
+// {
+// 	int		num_env;
+// 	char	**ret;
+// 	int		i;
+// 	t_list	*idx;
+
+// 	num_env = count_env_num();
+// 	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
+// 	if (ret == NULL)
+// 		return (NULL);
+// 	i = 0;
+// 	idx = g_info.env;
+// 	while (idx)
+// 	{
+// 		ret[i] = unite_key_value_with_quotation(idx);
+// 		if (ret[i] == NULL)
+// 		{
+// 			free_envp_list(ret);
+// 			return (NULL);
+// 		}
+// 		++i;
+// 		idx = idx->next;
+// 	}
+// 	ret[i] = NULL;
+// 	return (ret);
+// }
+
+int		count_env_num_all()
 {
 	int		i;
 	t_list	*idx;
@@ -212,6 +274,21 @@ int		count_env_num()
 	while (idx)
 	{
 		++i;
+		idx = idx->next;
+	}
+	return (i);
+}
+int		count_env_num_exclude_null_value()
+{
+	int		i;
+	t_list	*idx;
+
+	i = 0;
+	idx = g_info.env;
+	while (idx)
+	{
+		if (((t_env_node *)(idx->data))->value != NULL)
+			++i;
 		idx = idx->next;
 	}
 	return (i);
@@ -294,3 +371,105 @@ char	*find_key_and_return_value(char *key)
 	else
 		return (((t_env_node*)(idx->data))->value);
 }
+
+t_env_node	*find_key_and_return_node(char *key)
+{
+	t_list *idx;
+
+	idx = g_info.env;
+	while (idx)
+	{
+		if (ft_strcmp(key, ((t_env_node*)(idx->data))->key) == 0)
+			break ;
+		idx = idx->next;
+	}
+	if (idx == NULL)
+		return (NULL);
+	else
+		return ((t_env_node*)(idx->data));
+
+}
+
+// 각 주석 블럭마다 맨 앞에 테스트 설명 적어놓았습니다.
+// 모두 valgrind로 메모리 누수 체크 완료
+
+/* set_new_key 테스트(success)
+t_info	g_info;
+
+void	print_env(){
+	t_list *idx;
+
+	idx = g_info.env;
+	while (idx){
+		printf("key = %s, ", ((t_env_node*)(idx->data))->key);
+		printf("value = %s\n", ((t_env_node*)(idx->data))->value);
+		idx = idx->next;
+	}
+}
+
+int main(){
+	set_new_key("HELLO=WORLD");
+	set_new_key("TEST=SUCCESS");
+	print_env();
+}
+*/
+
+
+/* init_minishell_envp()
+** set_new_key()
+** find_key_and_unset() 테스트 완료
+t_info g_info;
+
+void	print_env(){
+	t_list *idx;
+
+	idx = g_info.env;
+	while (idx){
+		printf("%s=", ((t_env_node*)(idx->data))->key);
+		printf("\"%s\"\n", ((t_env_node*)(idx->data))->value);
+		idx = idx->next;
+	}
+}
+
+int main(int argc, char *argv[], char *envp[]){
+	init_minishell_envp(envp);
+	set_new_key("HELLO=WORLD");
+	set_new_key("TEST=SUCCESS");
+	print_env();
+	printf("===================\n");
+	find_key_and_unset("HELLO");
+	print_env();
+	printf("===================\n");
+	find_key_and_unset("PATH");
+	find_key_and_unset("HELLO");
+	print_env();
+
+}
+*/
+
+
+/*
+** set_new_value_to_existing_key() 테스트 - 성공
+t_info g_info;
+
+void	print_env(){
+	t_list *idx;
+
+	idx = g_info.env;
+	while (idx){
+		printf("%s=", ((t_env_node*)(idx->data))->key);
+		printf("\"%s\"\n", ((t_env_node*)(idx->data))->value);
+		idx = idx->next;
+	}
+}
+
+int main(int argc, char *argv[], char *envp[]){
+	init_minishell_envp(envp);
+
+	char *tmp = ft_strdup("teststring not a path");
+	set_new_value_to_existing_key("PATH", tmp);
+
+	print_env();
+
+}
+*/

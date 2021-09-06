@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: johokyoun <johokyoun@student.42.fr>        +#+  +:+       +#+        */
+/*   By: hojo <hojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 23:11:02 by johokyoun         #+#    #+#             */
-/*   Updated: 2021/09/03 08:17:29 by johokyoun        ###   ########.fr       */
+/*   Updated: 2021/09/06 12:26:57 by hojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 char    **ascending_env_key(t_list *idx, char **ret)
-{ 
+{
     int idx_size;
     int i;
     int step;
@@ -24,7 +24,7 @@ char    **ascending_env_key(t_list *idx, char **ret)
     tmps_str = ret;
     idx_size = ft_lstsize(idx);
     while (++i < idx_size - 1)
-    {   
+    {
         step = -1;
         while (++step < idx_size - 1 - i)
         {
@@ -42,8 +42,8 @@ char    **ascending_env_key(t_list *idx, char **ret)
 int put_env_list()
 {
     t_list *idx;
-    char    **ret; 
-    char    **tmps_str;  
+    char    **ret;
+    char    **tmps_str;
     int i;
 
     i = 0;
@@ -66,7 +66,7 @@ int set_only_key(char *key)
     char *tmp;
     t_env_node *data;
     t_list  *node;
-    
+
     tmp = ft_strdup(key);
     data = (t_env_node *)malloc(sizeof(t_env_node));
     if (tmp == NULL || data == NULL)
@@ -81,7 +81,6 @@ int set_only_key(char *key)
     if (node == NULL)
     {
         free(data->key);
-        free(data->value);
         free(data);
         print_error(MALLOC_ERROR, "set only key");
         return (-1);
@@ -92,23 +91,29 @@ int set_only_key(char *key)
 
 int builtin_export(int i)
 {
+	t_env_node	*tmp;
+
     if (g_info.cmds[i][1] == NULL)
         put_env_list();
     else if (g_info.cmds[i][1] != NULL && g_info.cmds[i][2] == NULL)
     {
         if (ft_strchr(g_info.cmds[i][1], '=') == NULL)
         {
-            set_only_key(g_info.cmds[i][1]);
-            t_list *tmp;
-            t_env_node *ret;
-            tmp = g_info.env;
-            while (tmp->next != NULL)
-                tmp = tmp->next;
-            ret = tmp->data;
-            ft_putstr_fd(ret->key, 1);
+            if (find_key_and_return_value(g_info.cmds[i][1]) == NULL)
+                set_only_key(g_info.cmds[i][1]);
         }
         else
-            set_new_key(g_info.cmds[i][1]);
+        {
+            // if (find_key_and_return_value(g_info.cmds[i][1]) == NULL)
+			// 	set_new_key(g_info.cmds[i][1]);
+			// else
+			// {
+			// 	tmp = find_key_and_return_node(g_info.cmds[i][1]);
+			// 	free(tmp);
+			// 	set_new_key(g_info.cmds[i][1]);
+			// }
+			if (find_)
+        }
     }
     return (0);
 }

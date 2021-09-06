@@ -39,7 +39,11 @@ int	set_new_key(char *key_and_value);
 char	**get_env_list(void);
 char	**get_env_list_with_quotation(void);
 
-int		count_env_num(void);
+// 밸류 없는 노드도 카운트(get_env_list에 쓰임)
+int		count_env_num_all(void);
+
+// 밸류 없는 노드는 카운트 안 함(get_env_list_with_quotation에 쓰임)
+int		count_env_num_exclude_null_value(void);
 
 char	*unite_key_value(t_list *idx);
 char	*unite_key_value_with_quotation(t_list *idx);
@@ -49,3 +53,6 @@ void	free_envp_list(char **envp);
 
 // 키 스트링을 주면 밸류 스트링을 반환(밸류 스트링은 전역변수에 있는 리스트의 원본이므로 수정하지 않게 주의)
 char	*find_key_and_return_value(char *key);
+
+// 키 스트링을 주면 해당 노드의 포인터를 반환, 못 찾으면 널 반환
+t_env_node	*find_key_and_return_node(char *key);
