@@ -372,7 +372,7 @@ char	*find_key_and_return_value(char *key)
 		return (((t_env_node*)(idx->data))->value);
 }
 
-t_env_node	*find_key_and_return_node(char *key)
+t_list	*find_key_and_return_node(char *key)
 {
 	t_list *idx;
 
@@ -386,7 +386,7 @@ t_env_node	*find_key_and_return_node(char *key)
 	if (idx == NULL)
 		return (NULL);
 	else
-		return ((t_env_node*)(idx->data));
+		return (idx);
 
 }
 
