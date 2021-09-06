@@ -5,18 +5,18 @@ int	init_minishell_envp(char *envp[])
 {
 	int			i;
 
+	char		*key_tmp;
+	char		*value_tmp;
+
 	i = -1;
 	while (envp[++i] != NULL)
 	{
 		if (set_new_key(envp[i]) < 0)
 			return (-1);
 	}
-	return (0); // 정상 종료
+	return (0);
 }
 
-// key_tmp와 value_tmp에 key랑 value 동적 할당해서 돌려준다.
-// 실패하면 둘 다 NULL로 돌려준다.
-// 실패시 따로 free해줄 것 없게 종료
 void	malloc_and_strcpy_key_value(char *env, char **key, char **value)
 {
 	int		key_len;
@@ -37,9 +37,6 @@ void	malloc_and_strcpy_key_value(char *env, char **key, char **value)
 	return ;
 }
 
-// key랑 value스트링 받아서 t_env_node동적할당한 다음 넣어주고 return
-// 실패시 key랑 value free하고 NULL 반환
-// 실패하든 성공하든 key랑 value에는 NULL 달아서 종료
 t_env_node	*make_env_node(char **key, char **value)
 {
 	t_env_node	*ret;
@@ -58,7 +55,6 @@ t_env_node	*make_env_node(char **key, char **value)
 	return (ret);
 }
 
-// 환경변수 스트링 받아서 '=' 전까지의 길이 반환
 int	ft_key_len(char *str)
 {
 	int	i;
@@ -113,8 +109,6 @@ int	set_new_value_to_existing_key(char *key, char *new_value)
 	return (0);
 }
 
-// key 찾아서 해당 노드 전부 free
-// 못 찾으면 그냥 무시
 void	find_key_and_unset(char *key)
 {
 	t_list *idx;
@@ -131,7 +125,7 @@ void	find_key_and_unset(char *key)
 	}
 	if (idx == NULL)
 		return ;
-	if (before_idx == NULL) // 첫 노드에서 key찾은 경우
+	if (before_idx == NULL)
 		g_info.env = idx->next;
 	else
 		before_idx->next = idx->next;
@@ -142,10 +136,6 @@ void	find_key_and_unset(char *key)
 	free(idx);
 }
 
-
-// "key=value"형태의 스트링 받아서
-// 환경변수 리스트에 addback해준다.
-// 동적할당 실패시 음수 리턴
 int	set_new_key(char *key_and_value)
 {
 	char		*key_tmp;
@@ -154,7 +144,7 @@ int	set_new_key(char *key_and_value)
 	t_list		*node;
 
 	malloc_and_strcpy_key_value(key_and_value, &key_tmp, &value_tmp);
-	if (key_tmp == NULL || value_tmp == NULL) // 사실 하나만 체크해도 되긴 함
+	if (key_tmp == NULL || value_tmp == NULL)
 	{
 		print_error(MALLOC_ERROR, "set new key");
 		return (-1);
@@ -187,7 +177,7 @@ char	**get_env_list(void)
 	int		i;
 	t_list	*idx;
 
-	num_env = count_env_num_all();
+	num_env = count_env_num_exclude_null_value();
 	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
 	if (ret == NULL)
 		return (NULL);
@@ -217,7 +207,7 @@ char	**get_env_list_with_quotation(void)
 	int		i;
 	t_list	*idx;
 
-	num_env = count_env_num_exclude_null_value();
+	num_env = count_env_num_all();
 	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
 	if (ret == NULL)
 		return (NULL);
@@ -226,7 +216,7 @@ char	**get_env_list_with_quotation(void)
 	while (idx)
 	{
 		if (((t_env_node *)(idx->data))->value != NULL)
-			ret[i] = unite_key_value(idx);
+			ret[i] = unite_key_value_with_quotation(idx);
 		else
 			ret[i] = ft_strdup(((t_env_node *)(idx->data))->key);
 		if (ret[i] == NULL)
