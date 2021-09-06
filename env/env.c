@@ -187,7 +187,7 @@ char	**get_env_list(void)
 	{
 		if (((t_env_node *)(idx->data))->value != NULL)
 		{
-			ret[i] = unite_key_value_with_quotation(idx);
+			ret[i] = unite_key_value(idx);
 			if (ret[i] == NULL)
 			{
 				free_envp_list(ret);
