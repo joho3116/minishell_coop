@@ -1,44 +1,59 @@
-#include "utils.h"
+#include "../includes/minishell.h"
 
 void	print_prompt(void)
 {
-	printf("%s", getcwd(NULL, 0));
-	printf("$\n");
+	// ft_putstr_fd(getcwd(NULL, 0), 1);
+	ft_putstr_fd("$> ", 1);
 }
 // 임시 제작 프롬프트 출력 함수, getcwd 사용법 확실히 더 숙지해야함.
 
 void	sig_handler(int signum)
 {
+	pid_t	pid;
+	int	status;
+
+	pid = waitpid(-1, &status, WNOHANG);
 	if (signum == SIGINT)
 	{
-		printf("\b\btest : SIGINT\n");
-		print_prompt();
-		usleep(600);
+		if (pid == -1)
+		{
+			ft_putstr_fd("\b\b  \b\b\n", 1);
+			print_prompt();
+			rl_on_new_line();
+			rl_replace_line("" ,0);
+			rl_redisplay();
+		}
+		else
+			ft_putchar_fd('\n', 1);
 	}
-	// \b을 통해 입력되는 시그널 지우고, test 문구 출력, 프롬프트 출력, 이제 동작 구현
-	if (signum == SIGQUIT)
+	else if (signum == SIGQUIT)
 	{
-		printf("\b\btest : SIGQUIT\n");
-		usleep(600);
+		if (pid == -1)
+			ft_putstr_fd("\b\b  \b\b", 1);
+		else
+			ft_putstr_fd("Quit: 3\n", 1);
 	}
-	if (signum == SIGTERM)
-	{
-		printf("test: SIGTERM\n");
-		usleep(600);
-	}
+	// // if (signum == SIGTERM)
+	// {
+	// 	printf("test: SIGTERM\n");
+	// 	usleep(600);
+	// }
 }
 
-int		main()
-{
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, sig_handler);
-	signal(SIGTERM, sig_handler);
-	while (1)
-	{
-		printf("what?\n");
-		pause();
-	}
-}
+// int		main()
+// {
+// 	// printf("pid = %d\n", getpid());
+// 	signal(SIGINT, sig_handler);
+// 	// signal(SIGQUIT, sig_handler);
+// 	// signal(SIGTERM, sig_handler);
+// 	while (1)
+// 	{
+// 		char *line = readline("$> ");
+// 		if (line)
+// 			printf("|%s|\n", line);
+// 	}
+// 	return (0);
+// }
 
 
 // - SIGINT (Ctrl - C)
