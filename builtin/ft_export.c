@@ -6,7 +6,7 @@
 /*   By: hojo <hojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 23:11:02 by johokyoun         #+#    #+#             */
-/*   Updated: 2021/09/06 12:26:57 by hojo             ###   ########.fr       */
+/*   Updated: 2021/09/06 15:01:06 by hojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,13 @@ int set_only_key(char *key)
 
     tmp = ft_strdup(key);
     data = (t_env_node *)malloc(sizeof(t_env_node));
-    if (tmp == NULL || data == NULL)
+    if (tmp == NULL || data == NULL) // Null가드 분리
     {
         print_error(MALLOC_ERROR, "set only key");
         return (-1);
     }
     data->key = tmp;
     data->value = NULL;
-    tmp = NULL;
     node = ft_lstnew(data);
     if (node == NULL)
     {
@@ -91,7 +90,8 @@ int set_only_key(char *key)
 
 int builtin_export(int i)
 {
-	t_env_node	*tmp;
+	t_list	*tmp;
+    char    buf[1024];
 
     if (g_info.cmds[i][1] == NULL)
         put_env_list();
@@ -100,19 +100,27 @@ int builtin_export(int i)
         if (ft_strchr(g_info.cmds[i][1], '=') == NULL)
         {
             if (find_key_and_return_value(g_info.cmds[i][1]) == NULL)
-                set_only_key(g_info.cmds[i][1]);
+                if (set_only_key(g_info.cmds[i][1]) < 0)
+					return (1);
         }
         else
         {
-            // if (find_key_and_return_value(g_info.cmds[i][1]) == NULL)
-			// 	set_new_key(g_info.cmds[i][1]);
-			// else
-			// {
-			// 	tmp = find_key_and_return_node(g_info.cmds[i][1]);
-			// 	free(tmp);
-			// 	set_new_key(g_info.cmds[i][1]);
-			// }
-			if (find_)
+            ft_strlcpy(buf, g_info.cmds[i][1], 1024);
+            buf[ft_key_len(buf)] = '\0';
+            if (find_key_and_return_value(buf) == NULL)
+			{
+                if (set_new_key(g_info.cmds[i][1]) < 0)
+					return (1);
+            }
+			else
+			{
+				tmp = find_key_and_return_node(buf);
+				if (((t_env_node *)(tmp->data))->value != NULL)
+					free(((t_env_node *)(tmp->data))->value);
+				((t_env_node *)(tmp->data))->value = duplicate_only_value(g_info.cmds[i][1]);
+				if (((t_env_node *)(tmp->data))->value == NULL)
+					return (1);
+			}
         }
     }
     return (0);

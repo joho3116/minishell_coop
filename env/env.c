@@ -69,6 +69,27 @@ int	ft_key_len(char *str)
 	return (i);
 }
 
+char	*duplicate_only_value(char *key_value)
+{
+	int	len;
+	char	*ptr;
+	char	*ret;
+
+	len = ft_key_len(key_value);
+	ptr = key_value + len + 1;
+	ret = ft_strdup(ptr);
+	if (ret == NULL)
+		return (NULL);
+	return (ret);
+}
+
+////////////////////
+
+// key의 value를 new_value로 교체
+// new_value는 동적할당된 것이어야 함
+// key를 찾지 못할 경우 음수값 리턴
+// new_value == NULL이면 unset해버리기?
+// 호출 후 new_value에는 노드에 넣은 스트링 주소가 있으므로 건들지 않게 주의
 int	set_new_value_to_existing_key(char *key, char *new_value)
 {
 	t_list	*idx;

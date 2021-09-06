@@ -10,6 +10,8 @@ void	malloc_and_strcpy_key_value(char *env, char **key, char **value);
 
 t_env_node	*make_env_node(char **key, char **value);
 
+char	*duplicate_only_value(char *key_value);
+
 int	ft_key_len(char *str);
 
 
@@ -56,3 +58,4 @@ char	*find_key_and_return_value(char *key);
 
 // 키 스트링을 주면 해당 노드의 포인터를 반환, 못 찾으면 널 반환
 t_list	*find_key_and_return_node(char *key);
+char	*duplicate_only_value(char *key_value);
