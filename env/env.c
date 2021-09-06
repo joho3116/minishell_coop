@@ -73,6 +73,20 @@ int	ft_key_len(char *str)
 	return (i);
 }
 
+char	*duplicate_only_value(char *key_value)
+{
+	int	len;
+	char	*ptr;
+	char	*ret;
+
+	len = ft_key_len(key_value);
+	ptr = key_value + len + 1;
+	ret = ft_strdup(ptr);
+	if (ret == NULL)
+		return (NULL);
+	return (ret);
+}
+
 ////////////////////
 
 // key의 value를 new_value로 교체

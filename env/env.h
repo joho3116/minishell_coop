@@ -10,6 +10,8 @@ void	malloc_and_strcpy_key_value(char *env, char **key, char **value);
 
 t_env_node	*make_env_node(char **key, char **value);
 
+char	*duplicate_only_value(char *key_value);
+
 int	ft_key_len(char *str);
 
 
