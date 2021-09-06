@@ -54,4 +54,4 @@ void	free_envp_list(char **envp);
 char	*find_key_and_return_value(char *key);
 
 // 키 스트링을 주면 해당 노드의 포인터를 반환, 못 찾으면 널 반환
-t_env_node	*find_key_and_return_node(char *key);
+t_list	*find_key_and_return_node(char *key);
