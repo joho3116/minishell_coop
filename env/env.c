@@ -182,15 +182,15 @@ char	**get_env_list(void)
 	while (idx)
 	{
 		if (((t_env_node *)(idx->data))->value != NULL)
-			ret[i] = unite_key_value(idx);
-		else
-			ret[i] = ft_strdup(((t_env_node *)(idx->data))->key);
-		if (ret[i] == NULL)
 		{
-			free_envp_list(ret);
-			return (NULL);
+			ret[i] = unite_key_value_with_quotation(idx);
+			if (ret[i] == NULL)
+			{
+				free_envp_list(ret);
+				return (NULL);
+			}
+			++i;
 		}
-		++i;
 		idx = idx->next;
 	}
 	ret[i] = NULL;
@@ -212,15 +212,15 @@ char	**get_env_list_with_quotation(void)
 	while (idx)
 	{
 		if (((t_env_node *)(idx->data))->value != NULL)
+			ret[i] = unite_key_value(idx);
+		else
+			ret[i] = ft_strdup(((t_env_node *)(idx->data))->key);
+		if (ret[i] == NULL)
 		{
-			ret[i] = unite_key_value_with_quotation(idx);
-			if (ret[i] == NULL)
-			{
-				free_envp_list(ret);
-				return (NULL);
-			}
-			++i;
+			free_envp_list(ret);
+			return (NULL);
 		}
+		++i;
 		idx = idx->next;
 	}
 	ret[i] = NULL;
