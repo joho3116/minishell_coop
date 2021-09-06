@@ -177,7 +177,7 @@ char	**get_env_list(void)
 	int		i;
 	t_list	*idx;
 
-	num_env = count_env_num_all();
+	num_env = count_env_num_exclude_null_value();
 	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
 	if (ret == NULL)
 		return (NULL);
@@ -207,7 +207,7 @@ char	**get_env_list_with_quotation(void)
 	int		i;
 	t_list	*idx;
 
-	num_env = count_env_num_exclude_null_value();
+	num_env = count_env_num_all();
 	ret = (char **)malloc(sizeof(char *) * (num_env + 1));
 	if (ret == NULL)
 		return (NULL);
@@ -216,7 +216,7 @@ char	**get_env_list_with_quotation(void)
 	while (idx)
 	{
 		if (((t_env_node *)(idx->data))->value != NULL)
-			ret[i] = unite_key_value(idx);
+			ret[i] = unite_key_value_with_quotation(idx);
 		else
 			ret[i] = ft_strdup(((t_env_node *)(idx->data))->key);
 		if (ret[i] == NULL)
