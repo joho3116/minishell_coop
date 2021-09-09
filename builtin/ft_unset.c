@@ -6,7 +6,7 @@
 /*   By: hojo <hojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 15:29:29 by johokyoun         #+#    #+#             */
-/*   Updated: 2021/09/09 14:19:33 by hojo             ###   ########.fr       */
+/*   Updated: 2021/09/09 14:47:56 by hojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 int builtin_unset(int i)
 {
     int j;
+    bool flag;
 
     j = 0;
+    flag = FALSE;
     if (g_info.cmds[i][1] == NULL)
         return (0);
     while (g_info.cmds[i][j])
@@ -27,10 +29,13 @@ int builtin_unset(int i)
                 ft_putchar_fd('\'', 2);
                 ft_putstr_fd(g_info.cmds[i][j], 2);
                 ft_putstr_fd("': not a valid identifier", 2);
+                flag = TRUE;
             }
         find_key_and_unset(g_info.cmds[i][j]);
         j++;
     }
+    if (flag == TRUE)
+        return (1);
     return (0);
 }
 
