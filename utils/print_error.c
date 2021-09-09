@@ -41,6 +41,11 @@ void print_error(int error_type, char *opt)
 		ft_putstr_fd(" : ", 2);
 		ft_putstr_fd(("arguments not allowed\n"), 2);
 	}
+	else if (error_type == UNSET_ARG_ERROR)
+	{
+		ft_putstr_fd(opt, 2);
+		ft_putstr_fd(": ", 2);
+	}
 	else
 	{
 		ft_putstr_fd("unknown type error\n", 2);

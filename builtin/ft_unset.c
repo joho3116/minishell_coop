@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: johokyoun <johokyoun@student.42.fr>        +#+  +:+       +#+        */
+/*   By: hojo <hojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 15:29:29 by johokyoun         #+#    #+#             */
-/*   Updated: 2021/09/03 08:02:19 by johokyoun        ###   ########.fr       */
+/*   Updated: 2021/09/09 14:19:33 by hojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,23 @@
 
 int builtin_unset(int i)
 {
+    int j;
+
+    j = 0;
     if (g_info.cmds[i][1] == NULL)
         return (0);
-    if (g_info.cmds[i][1] && g_info.cmds[i][2] == NULL)
-        find_key_and_unset(g_info.cmds[i][1]);
+    while (g_info.cmds[i][j])
+    {
+        if (ft_strchr(g_info.cmds[i][j], '=') != NULL)
+            {
+                print_error(UNSET_ARG_ERROR, "unset");
+                ft_putchar_fd('\'', 2);
+                ft_putstr_fd(g_info.cmds[i][j], 2);
+                ft_putstr_fd("': not a valid identifier", 2);
+            }
+        find_key_and_unset(g_info.cmds[i][j]);
+        j++;
+    }
     return (0);
 }
 

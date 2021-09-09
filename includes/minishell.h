@@ -40,6 +40,7 @@
 # define OPEN_ERROR -8
 # define ERRNO_SET -9
 # define ENV_ARG_ERROR -10
+# define UNSET_ARG_ERROR -11
 
 # define IN_REDIR 11
 # define OUT_REDIR 12
